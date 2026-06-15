@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mochila Store</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f6f9;
+      color:#333;
+    }
+
+    /* MENU */
+    header{
+      background:#0d6efd;
+      color:white;
+      padding:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    header h1{
+      font-size:30px;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:20px;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      color:#ffd43b;
+    }
+
+    /* HERO */
+    .hero{
+      height:90vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      background:linear-gradient(to right,#0d6efd,#4dabf7);
+      color:white;
+      padding:20px;
+    }
+
+    .hero-content h2{
+      font-size:55px;
+      margin-bottom:20px;
+    }
+
+    .hero-content p{
+      font-size:20px;
+      margin-bottom:30px;
+    }
+
+    .btn{
+      display:inline-block;
+      padding:15px 30px;
+      background:white;
+      color:#0d6efd;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      background:#ffd43b;
+      color:#000;
+      transform:scale(1.05);
+    }
+
+    /* PRODUTOS */
+    .produtos{
+      padding:60px 20px;
+      text-align:center;
+    }
+
+    .produtos h2{
+      font-size:40px;
+      margin-bottom:40px;
+      color:#0d6efd;
+    }
+
+    .cards{
+      display:flex;
+      justify-content:center;
+      gap:30px;
+      flex-wrap:wrap;
+    }
+
+    .card{
+      background:white;
+      width:280px;
+      padding:20px;
+      border-radius:20px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.1);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+    }
+
+    .mochila{
+      width:120px;
+      height:160px;
+      background:#0d6efd;
+      margin:20px auto;
+      border-radius:25px;
+      position:relative;
+    }
+
+    .mochila::before{
+      content:"";
+      position:absolute;
+      width:70px;
+      height:35px;
+      border:8px solid #003f88;
+      border-bottom:none;
+      border-radius:40px 40px 0 0;
+      top:-35px;
+      left:18px;
+    }
+
+    .mochila::after{
+      content:"";
+      position:absolute;
+      width:70px;
+      height:45px;
+      background:#4dabf7;
+      bottom:15px;
+      left:25px;
+      border-radius:10px;
+    }
+
+    .preco{
+      color:#0d6efd;
+      font-size:25px;
+      font-weight:bold;
+      margin:15px 0;
+    }
+
+    footer{
+      background:#0d6efd;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MENU -->
+  <header>
+    <h1>Mochila Store</h1>
+
+    <nav>
+      <a href="#">Início</a>
+      <a href="#">Produtos</a>
+      <a href="#">Contato</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2>A Melhor Loja de Mochilas 🔥</h2>
+
+      <p>
+        Mochilas modernas, estilosas e perfeitas
+        para escola, viagens e dia a dia.
+      </p>
+
+      <a href="#" class="btn">Comprar Agora</a>
+    </div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section class="produtos">
+
+    <h2>Nossas Mochilas</h2>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="mochila"></div>
+
+        <h3>Mochila Escolar</h3>
+
+        <p>
+          Ideal para estudos e organização diária.
+        </p>
+
+        <div class="preco">R$ 129,90</div>
+
+        <a href="#" class="btn">Ver Produto</a>
+      </div>
+
+      <div class="card">
+        <div class="mochila"></div>
+
+        <h3>Mochila Gamer</h3>
+
+        <p>
+          Espaço perfeito para notebook e acessórios.
+        </p>
+
+        <div class="preco">R$ 199,90</div>
+
+        <a href="#" class="btn">Ver Produto</a>
+      </div>
+
+      <div class="card">
+        <div class="mochila"></div>
+
+        <h3>Mochila Viagem</h3>
+
+        <p>
+          Conforto e muito espaço para aventuras.
+        </p>
+
+        <div class="preco">R$ 249,90</div>
+
+        <a href="#" class="btn">Ver Produto</a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Mochila Store - Todos os direitos reservados
+  </footer>
+
+</body>
+</html>
