@@ -1,251 +1,372 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mochila Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mochila de Estudos</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
+:root{
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --text:#222;
+    --primary:#2563eb;
+}
 
-    body{
-      background:#f4f6f9;
-      color:#333;
-    }
+.dark{
+    --bg:#121212;
+    --card:#1e1e1e;
+    --text:#f5f5f5;
+    --primary:#3b82f6;
+}
 
-    /* MENU */
-    header{
-      background:#0d6efd;
-      color:white;
-      padding:20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
+*{
+    box-sizing:border-box;
+}
 
-    header h1{
-      font-size:30px;
-    }
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    transition:0.3s;
+}
 
-    nav a{
-      color:white;
-      text-decoration:none;
-      margin-left:20px;
-      font-weight:bold;
-      transition:0.3s;
-    }
+header{
+    background:var(--primary);
+    color:white;
+    padding:20px;
+    text-align:center;
+}
 
-    nav a:hover{
-      color:#ffd43b;
-    }
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
 
-    /* HERO */
-    .hero{
-      height:90vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      background:linear-gradient(to right,#0d6efd,#4dabf7);
-      color:white;
-      padding:20px;
-    }
+.card{
+    background:var(--card);
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
 
-    .hero-content h2{
-      font-size:55px;
-      margin-bottom:20px;
-    }
+input,button{
+    padding:10px;
+    margin:5px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
 
-    .hero-content p{
-      font-size:20px;
-      margin-bottom:30px;
-    }
+button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    cursor:pointer;
+}
 
-    .btn{
-      display:inline-block;
-      padding:15px 30px;
-      background:white;
-      color:#0d6efd;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:bold;
-      transition:0.3s;
-    }
+button:hover{
+    opacity:0.9;
+}
 
-    .btn:hover{
-      background:#ffd43b;
-      color:#000;
-      transform:scale(1.05);
-    }
+ul{
+    padding-left:20px;
+}
 
-    /* PRODUTOS */
-    .produtos{
-      padding:60px 20px;
-      text-align:center;
-    }
+.task-done{
+    text-decoration:line-through;
+    opacity:0.6;
+}
 
-    .produtos h2{
-      font-size:40px;
-      margin-bottom:40px;
-      color:#0d6efd;
-    }
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
 
-    .cards{
-      display:flex;
-      justify-content:center;
-      gap:30px;
-      flex-wrap:wrap;
+@media(max-width:700px){
+    .grid{
+        grid-template-columns:1fr;
     }
-
-    .card{
-      background:white;
-      width:280px;
-      padding:20px;
-      border-radius:20px;
-      box-shadow:0 5px 15px rgba(0,0,0,0.1);
-      transition:0.3s;
-    }
-
-    .card:hover{
-      transform:translateY(-10px);
-    }
-
-    .mochila{
-      width:120px;
-      height:160px;
-      background:#0d6efd;
-      margin:20px auto;
-      border-radius:25px;
-      position:relative;
-    }
-
-    .mochila::before{
-      content:"";
-      position:absolute;
-      width:70px;
-      height:35px;
-      border:8px solid #003f88;
-      border-bottom:none;
-      border-radius:40px 40px 0 0;
-      top:-35px;
-      left:18px;
-    }
-
-    .mochila::after{
-      content:"";
-      position:absolute;
-      width:70px;
-      height:45px;
-      background:#4dabf7;
-      bottom:15px;
-      left:25px;
-      border-radius:10px;
-    }
-
-    .preco{
-      color:#0d6efd;
-      font-size:25px;
-      font-weight:bold;
-      margin:15px 0;
-    }
-
-    footer{
-      background:#0d6efd;
-      color:white;
-      text-align:center;
-      padding:20px;
-      margin-top:50px;
-    }
-  </style>
+}
+</style>
 </head>
-
 <body>
 
-  <!-- MENU -->
-  <header>
-    <h1>Mochila Store</h1>
+<header>
+<h1>🎒 Mochila de Estudos</h1>
+<button onclick="toggleTheme()">🌙 Alternar Tema</button>
+</header>
 
-    <nav>
-      <a href="#">Início</a>
-      <a href="#">Produtos</a>
-      <a href="#">Contato</a>
-    </nav>
-  </header>
+<div class="container">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <h2>A Melhor Loja de Mochilas 🔥</h2>
+<div class="card">
+<h2>👤 Perfil do Aluno</h2>
 
-      <p>
-        Mochilas modernas, estilosas e perfeitas
-        para escola, viagens e dia a dia.
-      </p>
+<input id="nomeAluno" placeholder="Nome do aluno">
+<input id="turmaAluno" placeholder="Turma">
+<button onclick="salvarPerfil()">Salvar Perfil</button>
 
-      <a href="#" class="btn">Comprar Agora</a>
-    </div>
-  </section>
+<p><strong>Aluno:</strong> <span id="perfilNome">-</span></p>
+<p><strong>Turma:</strong> <span id="perfilTurma">-</span></p>
+</div>
 
-  <!-- PRODUTOS -->
-  <section class="produtos">
+<div class="grid">
 
-    <h2>Nossas Mochilas</h2>
+<div class="card">
+<h2>📚 Matérias</h2>
 
-    <div class="cards">
+<input id="materiaInput" placeholder="Nova matéria">
+<button onclick="addMateria()">Adicionar</button>
 
-      <div class="card">
-        <div class="mochila"></div>
+<ul id="materias"></ul>
+</div>
 
-        <h3>Mochila Escolar</h3>
+<div class="card">
+<h2>📝 Tarefas</h2>
 
-        <p>
-          Ideal para estudos e organização diária.
-        </p>
+<input id="tarefaInput" placeholder="Nova tarefa">
+<button onclick="addTarefa()">Adicionar</button>
 
-        <div class="preco">R$ 129,90</div>
+<ul id="tarefas"></ul>
+</div>
 
-        <a href="#" class="btn">Ver Produto</a>
-      </div>
+</div>
 
-      <div class="card">
-        <div class="mochila"></div>
+<div class="grid">
 
-        <h3>Mochila Gamer</h3>
+<div class="card">
+<h2>📊 Notas</h2>
 
-        <p>
-          Espaço perfeito para notebook e acessórios.
-        </p>
+<input id="notaMateria" placeholder="Matéria">
+<input id="notaValor" type="number" step="0.1" placeholder="Nota">
+<button onclick="addNota()">Adicionar</button>
 
-        <div class="preco">R$ 199,90</div>
+<ul id="notas"></ul>
 
-        <a href="#" class="btn">Ver Produto</a>
-      </div>
+<h3>Média: <span id="media">0</span></h3>
+</div>
 
-      <div class="card">
-        <div class="mochila"></div>
+<div class="card">
+<h2>📅 Provas</h2>
 
-        <h3>Mochila Viagem</h3>
+<input id="provaMateria" placeholder="Matéria">
+<input id="provaData" type="date">
+<button onclick="addProva()">Adicionar</button>
 
-        <p>
-          Conforto e muito espaço para aventuras.
-        </p>
+<ul id="provas"></ul>
+</div>
 
-        <div class="preco">R$ 249,90</div>
+</div>
 
-        <a href="#" class="btn">Ver Produto</a>
-      </div>
+</div>
 
-    </div>
-  </section>
+<script>
 
-  <footer>
-    © 2026 Mochila Store - Todos os direitos reservados
-  </footer>
+let data = JSON.parse(localStorage.getItem("mochila")) || {
+perfil:{nome:"",turma:""},
+materias:[],
+tarefas:[],
+notas:[],
+provas:[],
+dark:false
+};
 
+function save(){
+localStorage.setItem("mochila",JSON.stringify(data));
+render();
+}
+
+function render(){
+
+document.body.classList.toggle("dark",data.dark);
+
+document.getElementById("perfilNome").textContent =
+data.perfil.nome || "-";
+
+document.getElementById("perfilTurma").textContent =
+data.perfil.turma || "-";
+
+const materias=document.getElementById("materias");
+materias.innerHTML="";
+
+data.materias.forEach((m,i)=>{
+const li=document.createElement("li");
+li.innerHTML=`
+${m}
+<button onclick="deleteMateria(${i})">❌</button>
+`;
+materias.appendChild(li);
+});
+
+const tarefas=document.getElementById("tarefas");
+tarefas.innerHTML="";
+
+data.tarefas.forEach((t,i)=>{
+const li=document.createElement("li");
+li.className=t.done ? "task-done":"";
+li.innerHTML=`
+<span onclick="toggleTask(${i})" style="cursor:pointer">
+${t.text}
+</span>
+<button onclick="deleteTask(${i})">❌</button>
+`;
+tarefas.appendChild(li);
+});
+
+const notas=document.getElementById("notas");
+notas.innerHTML="";
+
+let soma=0;
+
+data.notas.forEach((n,i)=>{
+soma+=Number(n.valor);
+
+const li=document.createElement("li");
+
+li.innerHTML=`
+${n.materia}: ${n.valor}
+<button onclick="deleteNota(${i})">❌</button>
+`;
+
+notas.appendChild(li);
+});
+
+document.getElementById("media").textContent=
+data.notas.length
+? (soma/data.notas.length).toFixed(2)
+: "0";
+
+const provas=document.getElementById("provas");
+provas.innerHTML="";
+
+data.provas.forEach((p,i)=>{
+const li=document.createElement("li");
+
+li.innerHTML=`
+${p.materia} - ${p.data}
+<button onclick="deleteProva(${i})">❌</button>
+`;
+
+provas.appendChild(li);
+});
+}
+
+function salvarPerfil(){
+data.perfil.nome=
+document.getElementById("nomeAluno").value;
+
+data.perfil.turma=
+document.getElementById("turmaAluno").value;
+
+save();
+}
+
+function addMateria(){
+
+const v=document.getElementById("materiaInput").value.trim();
+
+if(!v)return;
+
+data.materias.push(v);
+
+document.getElementById("materiaInput").value="";
+
+save();
+}
+
+function deleteMateria(i){
+data.materias.splice(i,1);
+save();
+}
+
+function addTarefa(){
+
+const v=document.getElementById("tarefaInput").value.trim();
+
+if(!v)return;
+
+data.tarefas.push({
+text:v,
+done:false
+});
+
+document.getElementById("tarefaInput").value="";
+
+save();
+}
+
+function toggleTask(i){
+data.tarefas[i].done=!data.tarefas[i].done;
+save();
+}
+
+function deleteTask(i){
+data.tarefas.splice(i,1);
+save();
+}
+
+function addNota(){
+
+const materia=
+document.getElementById("notaMateria").value.trim();
+
+const valor=
+document.getElementById("notaValor").value;
+
+if(!materia || !valor)return;
+
+data.notas.push({
+materia,
+valor
+});
+
+document.getElementById("notaMateria").value="";
+document.getElementById("notaValor").value="";
+
+save();
+}
+
+function deleteNota(i){
+data.notas.splice(i,1);
+save();
+}
+
+function addProva(){
+
+const materia=
+document.getElementById("provaMateria").value.trim();
+
+const dataProva=
+document.getElementById("provaData").value;
+
+if(!materia || !dataProva)return;
+
+data.provas.push({
+materia,
+data:dataProva
+});
+
+document.getElementById("provaMateria").value="";
+document.getElementById("provaData").value="";
+
+save();
+}
+
+function deleteProva(i){
+data.provas.splice(i,1);
+save();
+}
+
+function toggleTheme(){
+data.dark=!data.dark;
+save();
+}
+
+render();
+
+</script>
 </body>
 </html>
