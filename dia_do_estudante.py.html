@@ -1,21 +1,248 @@
-import time
-import os
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-def dia_do_estudante():
-    # Limpa o terminal para uma apresentação mais bonita
-    os.system('cls' if os.name == 'nt' else 'clear')
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    mensagem = "🎓 Feliz Dia do Estudante! 🎓"
-    print(f"\n{mensagem}\n")
+<title>Dia do Estudante | 11 de Agosto</title>
 
-    # 🌟 Pequena animação de estrelas
-    for i in range(1, 8):
-        print("⭐" * i)
-        time.sleep(0.3)
+<link rel="stylesheet" href="style.css">
 
-    # Mensagem final motivacional
-    print("\nContinue sempre buscando conhecimento, pois estudar é a chave para o futuro! 🚀")
-    print("\n📚 Aprender é o primeiro passo para transformar o mundo! 💡")
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-if __name__ == "__main__":
-    dia_do_estudante()
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div id="loader">
+
+<h1>🎓 Dia do Estudante</h1>
+
+<div class="loading"></div>
+
+<p>Carregando...</p>
+
+</div>
+
+<header>
+
+<nav>
+
+<h2>🎓 Estudante</h2>
+
+<ul>
+
+<li><a href="#inicio">Início</a></li>
+
+<li><a href="#historia">História</a></li>
+
+<li><a href="#importancia">Importância</a></li>
+
+<li><a href="#curiosidades">Curiosidades</a></li>
+
+<li><a href="#galeria">Galeria</a></li>
+
+<li><a href="#quiz">Quiz</a></li>
+
+<li><a href="#contato">Contato</a></li>
+
+</ul>
+
+<button id="darkMode">
+
+<i class="fa-solid fa-moon"></i>
+
+</button>
+
+</nav>
+
+</header>
+
+<section class="hero" id="inicio">
+
+<div class="hero-text">
+
+<h1>11 de Agosto</h1>
+
+<h2>Feliz Dia do Estudante</h2>
+
+<p>
+
+O estudante é o protagonista da transformação da sociedade.
+Estudar é investir no futuro, desenvolver conhecimento,
+fortalecer sonhos e construir um mundo melhor.
+
+</p>
+
+<div class="hero-buttons">
+
+<button onclick="rolarHistoria()">
+
+Conheça a História
+
+</button>
+
+<button onclick="abrirQuiz()">
+
+Fazer Quiz
+
+</button>
+
+</div>
+
+</div>
+
+<div class="hero-image">
+
+<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900"
+alt="Estudantes">
+
+</div>
+
+</section>
+
+<section id="historia" class="container">
+
+<h2>📖 História do Dia do Estudante</h2>
+
+<p>
+
+O Dia do Estudante é comemorado em
+11 de agosto no Brasil.
+
+A data foi criada para homenagear todos aqueles que dedicam
+parte de suas vidas ao aprendizado e ao crescimento pessoal.
+
+Ela também lembra a criação dos primeiros cursos de Direito
+do país, em 1827, por Dom Pedro I.
+
+Desde então, o estudante representa esperança,
+conhecimento, inovação e desenvolvimento para a sociedade.
+
+</p>
+
+</section>
+
+<section class="cards">
+
+<div class="card">
+
+<i class="fa-solid fa-book"></i>
+
+<h3>Conhecimento</h3>
+
+<p>
+
+O conhecimento abre portas para novas oportunidades.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+<h3>Educação</h3>
+
+<p>
+
+A educação transforma vidas e melhora a sociedade.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-lightbulb"></i>
+
+<h3>Criatividade</h3>
+
+<p>
+
+Aprender é desenvolver novas ideias todos os dias.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-earth-americas"></i>
+
+<h3>Futuro</h3>
+
+<p>
+
+Cada estudante ajuda a construir um mundo melhor.
+
+</p>
+
+</div>
+
+</section>
+
+<section id="importancia" class="container">
+
+<h2>🌎 Importância do Estudante</h2>
+
+<p>
+
+Os estudantes são responsáveis pela construção
+do futuro da sociedade.
+
+São eles que desenvolvem pesquisas,
+criam novas tecnologias,
+descobrem soluções para problemas
+e contribuem para o crescimento do país.
+
+Estudar é investir em um futuro mais justo,
+mais inteligente e mais sustentável.
+
+</p>
+
+</section>
+
+<section class="contador">
+
+<div>
+
+<h1 id="contador1">0</h1>
+
+<p>Alunos Inspirados</p>
+
+</div>
+
+<div>
+
+<h1 id="contador2">0</h1>
+
+<p>Livros Lidos</p>
+
+</div>
+
+<div>
+
+<h1 id="contador3">0</h1>
+
+<p>Sonhos</p>
+
+</div>
+
+<div>
+
+<h1 id="contador4">0</h1>
+
+<p>Objetivos</p>
+
+</div>
+
+</section>
