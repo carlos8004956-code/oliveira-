@@ -1,0 +1,677 @@
+<!-- ============================= -->
+<!-- SEMANA NACIONAL DE TRÂNSITO -->
+<!-- ============================= -->
+
+<style>
+/* ===== ÁREA DA SEMANA DO TRÂNSITO ===== */
+
+.transito-section{
+    margin-top:30px;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+}
+
+/* CABEÇALHO */
+
+.transito-header{
+    text-align:center;
+    padding:35px 20px;
+    background:linear-gradient(135deg,#2563eb,#0ea5e9);
+    position:relative;
+    overflow:hidden;
+}
+
+.transito-header h2{
+    font-size:32px;
+    margin:5px 0 10px;
+}
+
+.transito-header p{
+    font-size:17px;
+    margin:0;
+}
+
+/* LUZES DECORATIVAS */
+
+.luz{
+    position:absolute;
+    width:12px;
+    height:12px;
+    background:#facc15;
+    border-radius:50%;
+    box-shadow:0 0 15px #facc15;
+    animation:piscando 1.5s infinite;
+}
+
+.luz1{left:8%;top:20px;}
+.luz2{right:12%;top:45px;animation-delay:.5s;}
+.luz3{left:18%;bottom:25px;animation-delay:1s;}
+.luz4{right:20%;bottom:20px;animation-delay:.3s;}
+
+@keyframes piscando{
+    0%,100%{opacity:.3;transform:scale(.8);}
+    50%{opacity:1;transform:scale(1.3);}
+}
+
+/* ESTRADA */
+
+.estrada{
+    height:160px;
+    background:#333;
+    position:relative;
+    overflow:hidden;
+    border-top:5px solid #facc15;
+    border-bottom:5px solid #facc15;
+}
+
+/* FAIXA DA ESTRADA */
+
+.faixa{
+    position:absolute;
+    top:75px;
+    left:0;
+    width:100%;
+    height:8px;
+    background:repeating-linear-gradient(
+        to right,
+        white 0px,
+        white 70px,
+        transparent 70px,
+        transparent 120px
+    );
+    animation:estradaMovimento 1s linear infinite;
+}
+
+@keyframes estradaMovimento{
+    from{
+        transform:translateX(0);
+    }
+    to{
+        transform:translateX(-120px);
+    }
+}
+
+/* CARRO */
+
+.carro{
+    position:absolute;
+    font-size:48px;
+    animation:carroMovimento 7s linear infinite;
+}
+
+.carro1{
+    top:35px;
+    left:-80px;
+}
+
+.carro2{
+    top:90px;
+    left:-120px;
+    animation-delay:3s;
+    font-size:42px;
+}
+
+@keyframes carroMovimento{
+    0%{
+        transform:translateX(-100px);
+    }
+
+    100%{
+        transform:translateX(calc(100vw + 200px));
+    }
+}
+
+/* SEMÁFORO */
+
+.semaforo{
+    position:absolute;
+    right:25px;
+    top:20px;
+    width:45px;
+    background:#111;
+    padding:7px;
+    border-radius:10px;
+}
+
+.lampada{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    margin:4px auto;
+    opacity:.3;
+}
+
+.vermelha{
+    background:red;
+    animation:semaforoVermelho 6s infinite;
+}
+
+.amarela{
+    background:yellow;
+    animation:semaforoAmarelo 6s infinite;
+}
+
+.verde{
+    background:#00ff44;
+    animation:semaforoVerde 6s infinite;
+}
+
+@keyframes semaforoVermelho{
+    0%,30%{opacity:1;box-shadow:0 0 15px red;}
+    31%,100%{opacity:.3;}
+}
+
+@keyframes semaforoAmarelo{
+    0%,30%{opacity:.3;}
+    31%,50%{opacity:1;box-shadow:0 0 15px yellow;}
+    51%,100%{opacity:.3;}
+}
+
+@keyframes semaforoVerde{
+    0%,50%{opacity:.3;}
+    51%,100%{opacity:1;box-shadow:0 0 15px #00ff44;}
+}
+
+/* CONTEÚDO */
+
+.transito-conteudo{
+    padding:25px;
+}
+
+.transito-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.transito-card{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:15px;
+    padding:20px;
+    transition:.3s;
+}
+
+.transito-card:hover{
+    transform:translateY(-6px);
+    background:rgba(255,255,255,.13);
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.transito-card h3{
+    margin-top:0;
+    color:#38bdf8;
+    font-size:21px;
+}
+
+.transito-card p{
+    line-height:1.7;
+}
+
+.transito-card ul{
+    line-height:1.8;
+}
+
+/* NÚMEROS */
+
+.transito-info{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:25px 0;
+}
+
+.numero{
+    text-align:center;
+    background:rgba(255,255,255,.08);
+    padding:20px;
+    border-radius:15px;
+}
+
+.numero strong{
+    display:block;
+    font-size:30px;
+    color:#facc15;
+}
+
+.numero span{
+    font-size:14px;
+}
+
+/* SINAIS */
+
+.sinais{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    margin-top:20px;
+}
+
+.sinal{
+    width:110px;
+    text-align:center;
+}
+
+.sinal-icon{
+    width:65px;
+    height:65px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    background:white;
+    color:#111;
+    border-radius:12px;
+    box-shadow:0 5px 12px rgba(0,0,0,.3);
+    transition:.3s;
+}
+
+.sinal-icon:hover{
+    transform:rotate(8deg) scale(1.1);
+}
+
+/* DICAS */
+
+.dica{
+    margin-top:20px;
+    padding:20px;
+    border-left:5px solid #22c55e;
+    background:rgba(34,197,94,.1);
+    border-radius:8px;
+}
+
+.transito-footer{
+    text-align:center;
+    padding:25px;
+    background:rgba(0,0,0,.2);
+    font-size:18px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+    .transito-grid{
+        grid-template-columns:1fr;
+    }
+
+    .transito-info{
+        grid-template-columns:1fr;
+    }
+
+    .transito-header h2{
+        font-size:25px;
+    }
+
+    .estrada{
+        height:130px;
+    }
+
+    .semaforo{
+        right:10px;
+    }
+}
+</style>
+
+
+<div class="transito-section">
+
+    <!-- CABEÇALHO -->
+    <div class="transito-header">
+
+        <div class="luz luz1"></div>
+        <div class="luz luz2"></div>
+        <div class="luz luz3"></div>
+        <div class="luz luz4"></div>
+
+        <h2>🚦 Semana Nacional de Trânsito</h2>
+
+        <p>
+            18 a 25 de setembro
+        </p>
+
+        <p>
+            Educação, respeito e segurança para todos.
+        </p>
+
+    </div>
+
+
+    <!-- ESTRADA ANIMADA -->
+
+    <div class="estrada">
+
+        <div class="faixa"></div>
+
+        <div class="carro carro1">🚗</div>
+        <div class="carro carro2">🏍️</div>
+
+        <div class="semaforo">
+
+            <div class="lampada vermelha"></div>
+            <div class="lampada amarela"></div>
+            <div class="lampada verde"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="transito-conteudo">
+
+
+        <!-- INTRODUÇÃO -->
+
+        <div class="transito-card">
+
+            <h3>🚦 O que é a Semana Nacional de Trânsito?</h3>
+
+            <p>
+                A Semana Nacional de Trânsito é um período de conscientização
+                realizado anualmente no Brasil entre os dias
+                <strong>18 e 25 de setembro</strong>.
+            </p>
+
+            <p>
+                Durante essa semana são realizadas campanhas, palestras,
+                atividades educativas e ações de conscientização para
+                incentivar atitudes mais seguras e responsáveis no trânsito.
+            </p>
+
+            <p>
+                A iniciativa busca envolver motoristas, motociclistas,
+                ciclistas, pedestres, passageiros, estudantes e toda a
+                sociedade na construção de um trânsito mais seguro.
+            </p>
+
+        </div>
+
+
+        <!-- INFORMAÇÕES -->
+
+        <div class="transito-info">
+
+            <div class="numero">
+                <strong>18</strong>
+                <span>Início da Semana</span>
+            </div>
+
+            <div class="numero">
+                <strong>25</strong>
+                <span>Dia Nacional do Trânsito</span>
+            </div>
+
+            <div class="numero">
+                <strong>🚦</strong>
+                <span>Segurança no trânsito</span>
+            </div>
+
+        </div>
+
+
+        <!-- GRID -->
+
+        <div class="transito-grid">
+
+
+            <!-- OBJETIVO -->
+
+            <div class="transito-card">
+
+                <h3>🎯 Objetivo</h3>
+
+                <p>
+                    O principal objetivo é promover a educação e a
+                    conscientização das pessoas sobre a importância de
+                    atitudes responsáveis no trânsito.
+                </p>
+
+                <p>
+                    A ideia é incentivar o respeito às leis, a prevenção
+                    de acidentes e a convivência segura entre todos os
+                    usuários das vias.
+                </p>
+
+            </div>
+
+
+            <!-- TEMA -->
+
+            <div class="transito-card">
+
+                <h3>📢 Tema da conscientização</h3>
+
+                <p>
+                    A Semana Nacional de Trânsito procura chamar a atenção
+                    para a responsabilidade individual e coletiva.
+                </p>
+
+                <p>
+                    Cada pessoa possui um papel importante para tornar as
+                    ruas, avenidas e estradas mais seguras.
+                </p>
+
+            </div>
+
+
+            <!-- MOTORISTAS -->
+
+            <div class="transito-card">
+
+                <h3>🚗 Motoristas</h3>
+
+                <ul>
+                    <li>Respeitar os limites de velocidade.</li>
+                    <li>Obedecer à sinalização.</li>
+                    <li>Usar o cinto de segurança.</li>
+                    <li>Não dirigir após consumir álcool.</li>
+                    <li>Manter atenção durante a condução.</li>
+                    <li>Respeitar pedestres e ciclistas.</li>
+                    <li>Evitar o uso do celular enquanto dirige.</li>
+                </ul>
+
+            </div>
+
+
+            <!-- MOTOCICLISTAS -->
+
+            <div class="transito-card">
+
+                <h3>🏍️ Motociclistas</h3>
+
+                <ul>
+                    <li>Utilizar capacete corretamente.</li>
+                    <li>Respeitar a velocidade da via.</li>
+                    <li>Manter distância segura dos veículos.</li>
+                    <li>Utilizar equipamentos de proteção.</li>
+                    <li>Respeitar a sinalização.</li>
+                    <li>Manter atenção aos outros usuários.</li>
+                </ul>
+
+            </div>
+
+
+            <!-- PEDESTRES -->
+
+            <div class="transito-card">
+
+                <h3>🚶 Pedestres</h3>
+
+                <ul>
+                    <li>Utilizar a faixa de pedestres quando disponível.</li>
+                    <li>Observar os veículos antes de atravessar.</li>
+                    <li>Respeitar os sinais de trânsito.</li>
+                    <li>Evitar atravessar entre veículos parados.</li>
+                    <li>Manter atenção ao atravessar ruas.</li>
+                </ul>
+
+            </div>
+
+
+            <!-- CICLISTAS -->
+
+            <div class="transito-card">
+
+                <h3>🚴 Ciclistas</h3>
+
+                <ul>
+                    <li>Utilizar equipamentos de segurança.</li>
+                    <li>Respeitar a sinalização.</li>
+                    <li>Utilizar ciclovias quando disponíveis.</li>
+                    <li>Manter atenção ao tráfego.</li>
+                    <li>Sinalizar suas intenções aos demais usuários.</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- SINALIZAÇÃO -->
+
+        <div class="transito-card" style="margin-top:20px;">
+
+            <h3>🚧 Conheça alguns sinais de trânsito</h3>
+
+            <div class="sinais">
+
+                <div class="sinal">
+                    <div class="sinal-icon">🛑</div>
+                    <p>Parada obrigatória</p>
+                </div>
+
+                <div class="sinal">
+                    <div class="sinal-icon">🚸</div>
+                    <p>Área escolar</p>
+                </div>
+
+                <div class="sinal">
+                    <div class="sinal-icon">🚦</div>
+                    <p>Semáforo</p>
+                </div>
+
+                <div class="sinal">
+                    <div class="sinal-icon">🚫</div>
+                    <p>Proibido</p>
+                </div>
+
+                <div class="sinal">
+                    <div class="sinal-icon">⚠️</div>
+                    <p>Atenção</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- IMPORTÂNCIA -->
+
+        <div class="transito-card" style="margin-top:20px;">
+
+            <h3>❤️ Por que o trânsito seguro é importante?</h3>
+
+            <p>
+                O trânsito faz parte da vida cotidiana de milhões de pessoas.
+                Todos os dias, pessoas utilizam ruas, avenidas e rodovias
+                para estudar, trabalhar, viajar e realizar suas atividades.
+            </p>
+
+            <p>
+                Por isso, atitudes responsáveis podem ajudar a prevenir
+                acidentes e proteger vidas.
+            </p>
+
+            <p>
+                Respeitar o próximo, prestar atenção, seguir as regras e
+                agir com responsabilidade são atitudes fundamentais para
+                uma convivência segura.
+            </p>
+
+        </div>
+
+
+        <!-- DICAS -->
+
+        <div class="transito-card" style="margin-top:20px;">
+
+            <h3>💡 Dicas para um trânsito mais seguro</h3>
+
+            <div class="dica">
+                🚗 Respeite os limites de velocidade.
+            </div>
+
+            <div class="dica">
+                🪖 Use corretamente os equipamentos de segurança.
+            </div>
+
+            <div class="dica">
+                📵 Não use o celular enquanto estiver dirigindo.
+            </div>
+
+            <div class="dica">
+                🚶 Respeite os pedestres.
+            </div>
+
+            <div class="dica">
+                🚴 Mantenha atenção aos ciclistas.
+            </div>
+
+            <div class="dica">
+                🚦 Obedeça à sinalização.
+            </div>
+
+            <div class="dica">
+                ❤️ Lembre-se: no trânsito, o mais importante é preservar vidas.
+            </div>
+
+        </div>
+
+
+        <!-- CONSCIENTIZAÇÃO -->
+
+        <div class="transito-card" style="margin-top:20px;">
+
+            <h3>🌎 Responsabilidade de todos</h3>
+
+            <p>
+                Um trânsito mais seguro depende da participação de todos.
+                Motoristas, motociclistas, ciclistas e pedestres precisam
+                conhecer seus direitos e deveres e respeitar os demais.
+            </p>
+
+            <p>
+                A educação para o trânsito deve começar desde cedo,
+                formando cidadãos conscientes e responsáveis.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- RODAPÉ -->
+
+    <div class="transito-footer">
+
+        🚦 <strong>Semana Nacional de Trânsito</strong> 🚦
+
+        <br>
+
+        <span>
+            Respeito no trânsito também é respeito à vida.
+        </span>
+
+    </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- FIM DA SEMANA DO TRÂNSITO -->
+<!-- ============================= -->
