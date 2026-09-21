@@ -1,0 +1,519 @@
+<!>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pessoas com deficiência no Brasil: os números do Censo 2022</title>
+  <meta name="description" content="Gráficos com dados do Censo 2022 do IBGE sobre pessoas com deficiência no Brasil: regiões, idade, tipos de dificuldade e educação.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #0E1A40;
+      --paper: #F6F8FC;
+      --white: #FFFFFF;
+      --blue: #1B4DDB;
+      --orange: #B85400;
+      --yellow: #FFC61A;
+      --muted: #48526B;
+      --line: rgba(14, 26, 64, .16);
+      --font: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:hover { text-decoration-thickness: 3px; }
+    :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 2px; }
+
+    .skip {
+      position: absolute; left: 1rem; top: -4rem;
+      background: var(--yellow); color: var(--ink);
+      padding: .75rem 1rem; font-weight: 700; z-index: 10;
+    }
+    .skip:focus { top: 1rem; }
+
+    .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+    /* ---------- Topo ---------- */
+    .hero { background: var(--ink); color: var(--white); }
+    .hero :focus-visible { outline-color: var(--yellow); }
+    .hero a { color: var(--yellow); }
+
+    .topbar {
+      display: flex; flex-wrap: wrap; gap: .5rem 2rem;
+      justify-content: space-between; align-items: center;
+      padding-block: 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+      font-size: 1rem;
+    }
+    .topbar strong { font-size: 1.05rem; }
+    .topbar nav { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
+    .topbar nav a { color: var(--white); }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 3rem;
+      align-items: center;
+      padding-block: clamp(2.5rem, 6vw, 5rem);
+    }
+    .hero h1 {
+      margin: 0 0 1.25rem;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      font-weight: 700;
+      max-width: 14ch;
+    }
+    .hero p { margin: 0 0 1rem; max-width: 52ch; color: #DCE3F5; }
+    .hero p.lead { font-size: 1.25rem; color: var(--white); }
+
+    .dots-figure { margin: 0; }
+    .dots {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: clamp(6px, 1.2vw, 12px);
+      max-width: 400px;
+    }
+    .dot { aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.2); }
+    .dot.on {
+      background: var(--yellow);
+      animation: acender .5s ease-out both;
+      animation-delay: calc(var(--i) * 140ms + 300ms);
+    }
+    .dot.part { background: linear-gradient(90deg, var(--yellow) 30%, rgba(255,255,255,.2) 30%); }
+    @keyframes acender {
+      from { background: rgba(255,255,255,.2); transform: scale(.6); }
+      to   { background: var(--yellow); transform: scale(1); }
+    }
+    .dots-figure figcaption { margin-top: 1rem; font-size: 1rem; color: #DCE3F5; max-width: 40ch; }
+
+    /* ---------- Seções ---------- */
+    section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+    section + section { border-top: 1px solid var(--line); }
+
+    .block {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 2.5rem 4rem;
+      align-items: start;
+    }
+    h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -.01em;
+    }
+    .block p { margin: 0 0 1rem; max-width: 46ch; }
+
+    .chart-box { min-width: 0; }
+    .chart { position: relative; height: 340px; }
+    .chart.tall { height: 400px; }
+    .chart.short { height: 300px; }
+
+    .fonte { margin: 1rem 0 0; font-size: .95rem; color: var(--muted); }
+
+    details { margin-top: .75rem; font-size: 1rem; }
+    summary { cursor: pointer; font-weight: 700; color: var(--blue); padding-block: .25rem; }
+    .table-scroll { overflow-x: auto; margin-top: .5rem; }
+    table { border-collapse: collapse; width: 100%; min-width: 320px; font-size: 1rem; }
+    caption { text-align: left; color: var(--muted); padding-bottom: .5rem; }
+    th, td { text-align: left; padding: .5rem .75rem; border-bottom: 1px solid var(--line); }
+    thead th { border-bottom: 2px solid var(--ink); }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    .definicao {
+      border-left: 6px solid var(--yellow);
+      background: var(--white);
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+      max-width: 60ch;
+    }
+    .definicao p { margin: 0; max-width: none; }
+
+    /* ---------- Datas e ações ---------- */
+    .datas { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; }
+    .data-item { border-top: 4px solid var(--ink); padding-top: 1rem; }
+    .data-item .dia { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
+    .data-item p { margin: .5rem 0 0; max-width: 40ch; }
+
+    .acoes { margin: 2rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.25rem; max-width: 62ch; }
+    .acoes li { padding-left: 1.5rem; position: relative; }
+    .acoes li::before {
+      content: ""; position: absolute; left: 0; top: .6em;
+      width: .7rem; height: .7rem; border-radius: 50%; background: var(--blue);
+    }
+    .acoes b { display: block; }
+
+    /* ---------- Fontes ---------- */
+    .fontes ol { padding-left: 1.25rem; max-width: 75ch; }
+    .fontes li { margin-bottom: .75rem; overflow-wrap: anywhere; }
+    .nota { color: var(--muted); font-size: 1rem; max-width: 70ch; }
+
+    footer { background: var(--ink); color: #DCE3F5; padding-block: 2rem; font-size: 1rem; }
+
+    /* ---------- Responsivo ---------- */
+    @media (max-width: 860px) {
+      .hero-grid, .block, .datas { grid-template-columns: 1fr; }
+      .hero-grid { gap: 2rem; }
+      .hero h1 { max-width: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .dot.on { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar">
+        <strong>Pessoas com deficiência no Brasil</strong>
+        <nav aria-label="Seções da página">
+          <a href="#regioes">Regiões</a>
+          <a href="#idade">Idade</a>
+          <a href="#tipos">Tipos</a>
+          <a href="#educacao">Educação</a>
+          <a href="#datas">Datas</a>
+          <a href="#fontes">Fontes</a>
+        </nav>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1>A cada 100 brasileiros, 7 têm deficiência.</h1>
+          <p class="lead">Em 2022, o Censo do IBGE contou 14,4 milhões de pessoas com deficiência no Brasil: 7,3% da população com 2 anos ou mais.</p>
+          <p>Os gráficos abaixo mostram onde essas pessoas vivem, quais são as dificuldades mais comuns e como a desigualdade aparece na educação. Todos os números têm fonte.</p>
+        </div>
+
+        <figure class="dots-figure">
+          <div class="dots" id="dots" role="img" aria-label="Cem círculos, dos quais sete e um pedaço estão destacados, representando 7,3% da população com deficiência."></div>
+          <figcaption>Cada círculo representa 1 pessoa em 100. Fonte: IBGE, Censo 2022.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- Regiões -->
+    <section id="regioes">
+      <div class="wrap block">
+        <div>
+          <h2>O Nordeste tem a maior proporção de pessoas com deficiência</h2>
+          <p>Na região, 8,6% da população tem deficiência. Em todas as regiões do país, o percentual é maior entre as mulheres do que entre os homens.</p>
+          <div class="definicao">
+            <p><b>Quem o Censo conta como pessoa com deficiência?</b> Quem respondeu "tem muita dificuldade" ou "não consegue de modo algum" em pelo menos uma atividade, como enxergar, ouvir, andar ou se comunicar, mesmo usando óculos, aparelho auditivo ou prótese.</p>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart">
+            <canvas id="grafRegioes" role="img" aria-label="Gráfico de barras: percentual da população com deficiência por região e sexo. Nordeste tem o maior percentual, 9,5% das mulheres e 7,6% dos homens."></canvas>
+          </div>
+          <details>
+            <summary>Ver os dados em tabela</summary>
+            <div class="table-scroll">
+              <table>
+                <caption>Pessoas com 2 anos ou mais com deficiência (% da população), 2022</caption>
+                <thead><tr><th>Região</th><th class="num">Total</th><th class="num">Homens</th><th class="num">Mulheres</th></tr></thead>
+                <tbody>
+                  <tr><td>Brasil</td><td class="num">7,3</td><td class="num">6,4</td><td class="num">8,1</td></tr>
+                  <tr><td>Norte</td><td class="num">7,1</td><td class="num">6,6</td><td class="num">7,7</td></tr>
+                  <tr><td>Nordeste</td><td class="num">8,6</td><td class="num">7,6</td><td class="num">9,5</td></tr>
+                  <tr><td>Sudeste</td><td class="num">6,8</td><td class="num">5,9</td><td class="num">7,7</td></tr>
+                  <tr><td>Sul</td><td class="num">6,6</td><td class="num">5,9</td><td class="num">7,3</td></tr>
+                  <tr><td>Centro-Oeste</td><td class="num">6,5</td><td class="num">5,8</td><td class="num">7,2</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022, resultados preliminares da amostra (<a href="#fontes">fonte 2</a>).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Idade -->
+    <section id="idade">
+      <div class="wrap block">
+        <div>
+          <h2>A deficiência é mais frequente com o passar dos anos</h2>
+          <p>Entre crianças de 2 a 14 anos, 2,2% têm deficiência. Entre quem tem 70 anos ou mais, o percentual chega a 27,5%: mais de uma pessoa em cada quatro.</p>
+        </div>
+        <div class="chart-box">
+          <div class="chart short">
+            <canvas id="grafIdade" role="img" aria-label="Gráfico de barras: percentual com deficiência por faixa de idade. 2,2% de 2 a 14 anos, 5,4% de 15 a 59 anos e 27,5% com 70 anos ou mais."></canvas>
+          </div>
+          <details>
+            <summary>Ver os dados em tabela</summary>
+            <div class="table-scroll">
+              <table>
+                <caption>Pessoas com deficiência por faixa de idade (% da população da faixa), 2022</caption>
+                <thead><tr><th>Faixa de idade</th><th class="num">%</th></tr></thead>
+                <tbody>
+                  <tr><td>2 a 14 anos</td><td class="num">2,2</td></tr>
+                  <tr><td>15 a 59 anos</td><td class="num">5,4</td></tr>
+                  <tr><td>70 anos ou mais</td><td class="num">27,5</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tipos -->
+    <section id="tipos">
+      <div class="wrap block">
+        <div>
+          <h2>Enxergar é a dificuldade mais comum</h2>
+          <p>Dos 14,4 milhões de pessoas com deficiência, 7,9 milhões tinham dificuldade para enxergar, mesmo usando óculos ou lentes.</p>
+          <p>A soma dos grupos passa de 14,4 milhões porque uma pessoa pode ter mais de uma dificuldade. No Brasil, 2% da população tem duas ou mais.</p>
+        </div>
+        <div class="chart-box">
+          <div class="chart short">
+            <canvas id="grafTipos" role="img" aria-label="Gráfico de barras horizontais: pessoas com deficiência por tipo de dificuldade, em milhões. Enxergar 7,9; andar 5,2; pegar objetos 2,7; ouvir 2,6; limitação mental 1,4."></canvas>
+          </div>
+          <details>
+            <summary>Ver os dados em tabela</summary>
+            <div class="table-scroll">
+              <table>
+                <caption>Pessoas com deficiência por tipo de dificuldade, em milhões, 2022</caption>
+                <thead><tr><th>Dificuldade</th><th class="num">Milhões</th></tr></thead>
+                <tbody>
+                  <tr><td>Enxergar</td><td class="num">7,9</td></tr>
+                  <tr><td>Andar ou subir degraus</td><td class="num">5,2</td></tr>
+                  <tr><td>Pegar pequenos objetos ou abrir e fechar tampas</td><td class="num">2,7</td></tr>
+                  <tr><td>Ouvir</td><td class="num">2,6</td></tr>
+                  <tr><td>Limitação mental</td><td class="num">1,4</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educação -->
+    <section id="educacao">
+      <div class="wrap block">
+        <div>
+          <h2>A desigualdade aparece na escola</h2>
+          <p>A taxa de analfabetismo entre pessoas com deficiência (15 anos ou mais) é de 21,3%, quatro vezes a das pessoas sem deficiência (5,2%).</p>
+          <p>Só 7,4% das pessoas com deficiência concluíram o ensino superior, contra 19,5% das pessoas sem deficiência.</p>
+        </div>
+        <div class="chart-box">
+          <div class="chart tall">
+            <canvas id="grafEducacao" role="img" aria-label="Gráfico de barras agrupadas comparando pessoas com e sem deficiência. Analfabetismo: 21,3% e 5,2%. Sem instrução ou fundamental incompleto: 63,1% e 32,3%. Ensino superior concluído: 7,4% e 19,5%."></canvas>
+          </div>
+          <details>
+            <summary>Ver os dados em tabela</summary>
+            <div class="table-scroll">
+              <table>
+                <caption>Indicadores de educação (%), 2022</caption>
+                <thead><tr><th>Indicador</th><th class="num">Com deficiência</th><th class="num">Sem deficiência</th></tr></thead>
+                <tbody>
+                  <tr><td>Analfabetismo (15 anos ou mais)</td><td class="num">21,3</td><td class="num">5,2</td></tr>
+                  <tr><td>Sem instrução ou fundamental incompleto (25 anos ou mais)</td><td class="num">63,1</td><td class="num">32,3</td></tr>
+                  <tr><td>Ensino superior concluído</td><td class="num">7,4</td><td class="num">19,5</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>). As faixas de idade variam conforme o indicador.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Datas -->
+    <section id="datas">
+      <div class="wrap">
+        <h2>Duas datas para lembrar</h2>
+        <div class="datas">
+          <div class="data-item">
+            <div class="dia">21 de setembro</div>
+            <p><b>Dia Nacional de Luta da Pessoa com Deficiência</b>, no Brasil.</p>
+          </div>
+          <div class="data-item">
+            <div class="dia">3 de dezembro</div>
+            <p><b>Dia Internacional das Pessoas com Deficiência</b>, definido pela ONU.</p>
+          </div>
+        </div>
+
+        <ul class="acoes">
+          <li><b>Use o termo "pessoa com deficiência".</b> É o termo adotado pela Convenção da ONU e pela Lei Brasileira de Inclusão. Evite "portador" e "deficiente".</li>
+          <li><b>Pergunte antes de ajudar.</b> Cada pessoa sabe do que precisa. Ofereça ajuda e respeite a resposta.</li>
+          <li><b>Respeite vagas e espaços de acessibilidade.</b> Rampas, vagas reservadas e pisos táteis precisam estar livres.</li>
+          <li><b>Torne o que você publica acessível.</b> Descreva imagens, use legendas em vídeos e escolha cores com bom contraste.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Fontes -->
+    <section id="fontes" class="fontes">
+      <div class="wrap">
+        <h2>Fontes</h2>
+        <ol>
+          <li>IBGE, Agência de Notícias. <em>Censo 2022: Brasil tem 14,4 milhões de pessoas com deficiência</em>. 23 mai. 2025.
+            <a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43463-censo-2022-brasil-tem-14-4-milhoes-de-pessoas-com-deficiencia" target="_blank" rel="noopener">Acessar</a></li>
+          <li>IBGE. <em>Pessoas com deficiência e pessoas diagnosticadas com transtorno do espectro autista: resultados preliminares da amostra</em> (Censo Demográfico 2022).
+            <a href="https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/5ab58b8c2ab073e86c02984aae6b6d6c.pdf" target="_blank" rel="noopener">Acessar (PDF)</a></li>
+        </ol>
+        <p class="nota">Os números são do Censo Demográfico 2022. Outras pesquisas do IBGE, como a PNAD Contínua, usam metodologia própria e trazem valores diferentes. Confira os dados atualizados no site do IBGE.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Página de conscientização sobre o Dia Nacional de Luta da Pessoa com Deficiência. Dados: IBGE.
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script>
+    /* ---------- Círculos do topo: 7,3 em cada 100 ---------- */
+    (function () {
+      var box = document.getElementById('dots');
+      for (var i = 0; i < 100; i++) {
+        var d = document.createElement('span');
+        d.className = 'dot';
+        if (i < 7) { d.className += ' on'; d.style.setProperty('--i', i); }
+        else if (i === 7) { d.className += ' part'; }
+        box.appendChild(d);
+      }
+    })();
+
+    /* ---------- Gráficos ---------- */
+    if (window.Chart) {
+      var INK = '#0E1A40', BLUE = '#1B4DDB', ORANGE = '#B85400', GRID = 'rgba(14,26,64,.14)';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      Chart.defaults.font.family = "'Atkinson Hyperlegible', system-ui, sans-serif";
+      Chart.defaults.font.size = 14;
+      Chart.defaults.color = INK;
+      if (reduce) Chart.defaults.animation = false;
+
+      var pct = function (v) { return v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; };
+      var mi  = function (v) { return v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mi'; };
+
+      /* escreve o valor na ponta de cada barra */
+      var rotulos = {
+        id: 'rotulos',
+        afterDatasetsDraw: function (chart, args, opts) {
+          var ctx = chart.ctx, horizontal = chart.options.indexAxis === 'y';
+          ctx.save();
+          ctx.font = '700 14px ' + Chart.defaults.font.family;
+          ctx.fillStyle = INK;
+          chart.data.datasets.forEach(function (ds, i) {
+            chart.getDatasetMeta(i).data.forEach(function (bar, j) {
+              var txt = opts.format(ds.data[j]);
+              if (horizontal) { ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(txt, bar.x + 6, bar.y); }
+              else { ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(txt, bar.x, bar.y - 5); }
+            });
+          });
+          ctx.restore();
+        }
+      };
+
+      function base(fmt, horizontal, legend) {
+        var valueAxis = {
+          beginAtZero: true, grace: '8%',
+          grid: { color: GRID },
+          border: { display: false },
+          ticks: { callback: function (v) { return fmt === pct ? v + '%' : v; } }
+        };
+        var catAxis = { grid: { display: false }, ticks: { font: { size: 14 } } };
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: horizontal ? 'y' : 'x',
+          layout: { padding: horizontal ? { right: 56 } : { top: 22 } },
+          scales: horizontal ? { x: valueAxis, y: catAxis } : { x: catAxis, y: valueAxis },
+          plugins: {
+            legend: { display: legend, position: 'top', align: 'start', labels: { boxWidth: 14, boxHeight: 14, padding: 16 } },
+            rotulos: { format: fmt },
+            tooltip: {
+              callbacks: {
+                label: function (c) {
+                  var v = horizontal ? c.parsed.x : c.parsed.y;
+                  return (c.dataset.label ? c.dataset.label + ': ' : '') + fmt(v);
+                }
+              }
+            }
+          }
+        };
+      }
+
+      /* Regiões */
+      new Chart(document.getElementById('grafRegioes'), {
+        type: 'bar',
+        plugins: [rotulos],
+        data: {
+          labels: ['Norte', 'Nordeste', 'Sudeste', 'Sul', 'Centro-Oeste'],
+          datasets: [
+            { label: 'Homens',   data: [6.6, 7.6, 5.9, 5.9, 5.8], backgroundColor: BLUE,   borderRadius: 3 },
+            { label: 'Mulheres', data: [7.7, 9.5, 7.7, 7.3, 7.2], backgroundColor: ORANGE, borderRadius: 3 }
+          ]
+        },
+        options: base(pct, false, true)
+      });
+
+      /* Idade */
+      new Chart(document.getElementById('grafIdade'), {
+        type: 'bar',
+        plugins: [rotulos],
+        data: {
+          labels: ['2 a 14 anos', '15 a 59 anos', '70 anos ou mais'],
+          datasets: [{ label: 'Com deficiência', data: [2.2, 5.4, 27.5], backgroundColor: BLUE, borderRadius: 3 }]
+        },
+        options: base(pct, false, false)
+      });
+
+      /* Tipos de dificuldade */
+      new Chart(document.getElementById('grafTipos'), {
+        type: 'bar',
+        plugins: [rotulos],
+        data: {
+          labels: ['Enxergar', 'Andar ou subir degraus', 'Pegar objetos', 'Ouvir', 'Limitação mental'],
+          datasets: [{ label: 'Pessoas (milhões)', data: [7.9, 5.2, 2.7, 2.6, 1.4], backgroundColor: BLUE, borderRadius: 3 }]
+        },
+        options: base(mi, true, false)
+      });
+
+      /* Educação */
+      new Chart(document.getElementById('grafEducacao'), {
+        type: 'bar',
+        plugins: [rotulos],
+        data: {
+          labels: [
+            ['Analfabetismo', '(15 anos ou mais)'],
+            ['Sem instrução ou', 'fundamental incompleto', '(25 anos ou mais)'],
+            ['Ensino superior', 'concluído']
+          ],
+          datasets: [
+            { label: 'Com deficiência', data: [21.3, 63.1, 7.4],  backgroundColor: ORANGE, borderRadius: 3 },
+            { label: 'Sem deficiência', data: [5.2, 32.3, 19.5],  backgroundColor: BLUE,   borderRadius: 3 }
+          ]
+        },
+        options: base(pct, false, true)
+      });
+    }
+  </script>
+</body>
+</html>
