@@ -1,4 +1,4 @@
-<!>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
@@ -143,6 +143,30 @@
     }
     .definicao p { margin: 0; max-width: none; }
 
+    /* ---------- Bengalas ---------- */
+    .intro { max-width: 62ch; margin: 0 0 1rem; }
+    .bengalas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem 2rem;
+      margin: 2.5rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .bengala {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      border-top: 4px solid var(--ink);
+      padding-top: 1.25rem;
+    }
+    .bengala svg { width: 56px; height: auto; display: block; }
+    .bengala h3 { margin: 0 0 .25rem; font-size: 1.4rem; line-height: 1.2; }
+    .bengala .cond { margin: 0 0 .5rem; font-weight: 700; color: var(--blue); }
+    .bengala p { margin: 0; max-width: 34ch; }
+    .bengalas-lei { margin-top: 2.5rem; }
+
     /* ---------- Datas e ações ---------- */
     .datas { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; }
     .data-item { border-top: 4px solid var(--ink); padding-top: 1rem; }
@@ -166,7 +190,7 @@
 
     /* ---------- Responsivo ---------- */
     @media (max-width: 860px) {
-      .hero-grid, .block, .datas { grid-template-columns: 1fr; }
+      .hero-grid, .block, .datas, .bengalas { grid-template-columns: 1fr; }
       .hero-grid { gap: 2rem; }
       .hero h1 { max-width: none; }
     }
@@ -188,6 +212,7 @@
           <a href="#idade">Idade</a>
           <a href="#tipos">Tipos</a>
           <a href="#educacao">Educação</a>
+          <a href="#bengalas">Bengalas</a>
           <a href="#datas">Datas</a>
           <a href="#fontes">Fontes</a>
         </nav>
@@ -340,6 +365,69 @@
       </div>
     </section>
 
+    <!-- Bengalas -->
+    <section id="bengalas">
+      <div class="wrap">
+        <h2>As cores da bengala têm significado</h2>
+        <p class="intro">A bengala longa ajuda a pessoa a perceber obstáculos no caminho e a se locomover com segurança. A cor não é enfeite: ela informa a condição de quem usa. No Brasil, a Lei 14.951, de 2024, prevê três cores.</p>
+
+        <ul class="bengalas">
+          <li class="bengala">
+            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
+              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
+              <rect x="21" y="48" width="14" height="132" fill="#FFFFFF" stroke="#0E1A40" stroke-width="2"/>
+              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
+            </svg>
+            <div>
+              <h3>Bengala branca</h3>
+              <p class="cond">Pessoa com cegueira</p>
+              <p>É a mais conhecida. Em muitos países, indica que quem a usa é cego.</p>
+            </div>
+          </li>
+
+          <li class="bengala">
+            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
+              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
+              <rect x="21" y="48" width="14" height="132" fill="#1E8E3E" stroke="#0E1A40" stroke-width="2"/>
+              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
+            </svg>
+            <div>
+              <h3>Bengala verde</h3>
+              <p class="cond">Pessoa com baixa visão</p>
+              <p>Quem tem baixa visão pode enxergar em parte, em graus diferentes. Perceber algo não significa enxergar bem.</p>
+            </div>
+          </li>
+
+          <li class="bengala">
+            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
+              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
+              <rect x="21" y="48" width="14" height="132" fill="#FFFFFF"/>
+              <rect x="21" y="66" width="14" height="22" fill="#D0222D"/>
+              <rect x="21" y="106" width="14" height="22" fill="#D0222D"/>
+              <rect x="21" y="146" width="14" height="22" fill="#D0222D"/>
+              <rect x="21" y="48" width="14" height="132" fill="none" stroke="#0E1A40" stroke-width="2"/>
+              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
+            </svg>
+            <div>
+              <h3>Bengala vermelha e branca</h3>
+              <p class="cond">Pessoa com surdocegueira</p>
+              <p>A surdocegueira combina deficiência visual e auditiva, parcial ou total. A pessoa pode não ouvir quando você a chamar.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="definicao bengalas-lei">
+          <p><b>O que diz a lei.</b> A Lei 14.951/2024 prevê que o SUS forneça a bengala longa na cor pedida por quem vai usá-la. Quando for preciso avaliar a condição da pessoa, a avaliação é feita por equipe multiprofissional. A lei também determina que o poder público divulgue o significado das cores (<a href="#fontes">fonte 3</a>).</p>
+        </div>
+
+        <ul class="acoes">
+          <li><b>Não segure, empurre nem mova a bengala de ninguém.</b> Ela é uma ferramenta de locomoção, como as pernas de quem a usa.</li>
+          <li><b>Diga quem você é ao falar.</b> Se a pessoa não vê, ela não sabe quem se aproximou. Se a bengala for vermelha e branca, ela pode não ouvir você.</li>
+          <li><b>Não duvide da bengala verde.</b> Quem tem baixa visão pode reconhecer um objeto e ainda assim precisar da bengala para se locomover.</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- Datas -->
     <section id="datas">
       <div class="wrap">
@@ -373,8 +461,10 @@
             <a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43463-censo-2022-brasil-tem-14-4-milhoes-de-pessoas-com-deficiencia" target="_blank" rel="noopener">Acessar</a></li>
           <li>IBGE. <em>Pessoas com deficiência e pessoas diagnosticadas com transtorno do espectro autista: resultados preliminares da amostra</em> (Censo Demográfico 2022).
             <a href="https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/5ab58b8c2ab073e86c02984aae6b6d6c.pdf" target="_blank" rel="noopener">Acessar (PDF)</a></li>
+          <li>BRASIL. <em>Lei nº 14.951, de 2 de agosto de 2024</em>: dispõe sobre a coloração da órtese externa denominada bengala longa, para fins de identificação da condição de seu usuário. Texto integral reproduzido em Migalhas, 6 ago. 2024.
+            <a href="https://www.migalhas.com.br/quentes/412694/lei-preve-cores-para-bengalas-de-acordo-com-grau-de-deficiencia-visual" target="_blank" rel="noopener">Acessar</a></li>
         </ol>
-        <p class="nota">Os números são do Censo Demográfico 2022. Outras pesquisas do IBGE, como a PNAD Contínua, usam metodologia própria e trazem valores diferentes. Confira os dados atualizados no site do IBGE.</p>
+        <p class="nota">Os números dos gráficos são do Censo Demográfico 2022. Outras pesquisas do IBGE, como a PNAD Contínua, usam metodologia própria e trazem valores diferentes. Confira os dados atualizados no site do IBGE.</p>
       </div>
     </section>
   </main>
@@ -516,6 +606,4 @@
     }
   </script>
 </body>
-<a href="DOCTYPE>html" class="btn-home">dia da pessoa com deficiência.</a>
-  
 </html>
