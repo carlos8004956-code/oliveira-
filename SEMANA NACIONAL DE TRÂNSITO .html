@@ -1,609 +1,859 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pessoas com deficiência no Brasil: os números do Censo 2022</title>
-  <meta name="description" content="Gráficos com dados do Censo 2022 do IBGE sobre pessoas com deficiência no Brasil: regiões, idade, tipos de dificuldade e educação.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --ink: #0E1A40;
-      --paper: #F6F8FC;
-      --white: #FFFFFF;
-      --blue: #1B4DDB;
-      --orange: #B85400;
-      --yellow: #FFC61A;
-      --muted: #48526B;
-      --line: rgba(14, 26, 64, .16);
-      --font: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimTrânsito — Simulador de Cruzamento, Semáforo, Radar e Pedestres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2f4f7;
+    --panel:#ffffff;
+    --panel-2:#f7f9fc;
+    --line:#dde3ec;
+    --text:#131820;
+    --muted:#5b6777;
+    --accent:#0f6fff;
+    --green:#16a34a;
+    --yellow:#eab308;
+    --red:#dc2626;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.08);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d1117;
+      --panel:#161b22;
+      --panel-2:#1c232d;
+      --line:#2b323d;
+      --text:#e8edf4;
+      --muted:#9aa6b5;
+      --accent:#4d94ff;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
     }
-
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: var(--font);
-      font-size: 1.125rem;
-      line-height: 1.6;
-      color: var(--ink);
-      background: var(--paper);
-    }
-    a { color: var(--blue); text-underline-offset: 3px; }
-    a:hover { text-decoration-thickness: 3px; }
-    :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 2px; }
-
-    .skip {
-      position: absolute; left: 1rem; top: -4rem;
-      background: var(--yellow); color: var(--ink);
-      padding: .75rem 1rem; font-weight: 700; z-index: 10;
-    }
-    .skip:focus { top: 1rem; }
-
-    .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
-
-    /* ---------- Topo ---------- */
-    .hero { background: var(--ink); color: var(--white); }
-    .hero :focus-visible { outline-color: var(--yellow); }
-    .hero a { color: var(--yellow); }
-
-    .topbar {
-      display: flex; flex-wrap: wrap; gap: .5rem 2rem;
-      justify-content: space-between; align-items: center;
-      padding-block: 1.25rem;
-      border-bottom: 1px solid rgba(255,255,255,.2);
-      font-size: 1rem;
-    }
-    .topbar strong { font-size: 1.05rem; }
-    .topbar nav { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
-    .topbar nav a { color: var(--white); }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 3rem;
-      align-items: center;
-      padding-block: clamp(2.5rem, 6vw, 5rem);
-    }
-    .hero h1 {
-      margin: 0 0 1.25rem;
-      font-size: clamp(2.4rem, 6vw, 4.4rem);
-      line-height: 1.05;
-      letter-spacing: -.02em;
-      font-weight: 700;
-      max-width: 14ch;
-    }
-    .hero p { margin: 0 0 1rem; max-width: 52ch; color: #DCE3F5; }
-    .hero p.lead { font-size: 1.25rem; color: var(--white); }
-
-    .dots-figure { margin: 0; }
-    .dots {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: clamp(6px, 1.2vw, 12px);
-      max-width: 400px;
-    }
-    .dot { aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.2); }
-    .dot.on {
-      background: var(--yellow);
-      animation: acender .5s ease-out both;
-      animation-delay: calc(var(--i) * 140ms + 300ms);
-    }
-    .dot.part { background: linear-gradient(90deg, var(--yellow) 30%, rgba(255,255,255,.2) 30%); }
-    @keyframes acender {
-      from { background: rgba(255,255,255,.2); transform: scale(.6); }
-      to   { background: var(--yellow); transform: scale(1); }
-    }
-    .dots-figure figcaption { margin-top: 1rem; font-size: 1rem; color: #DCE3F5; max-width: 40ch; }
-
-    /* ---------- Seções ---------- */
-    section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
-    section + section { border-top: 1px solid var(--line); }
-
-    .block {
-      display: grid;
-      grid-template-columns: 5fr 7fr;
-      gap: 2.5rem 4rem;
-      align-items: start;
-    }
-    h2 {
-      margin: 0 0 1rem;
-      font-size: clamp(1.7rem, 3.4vw, 2.4rem);
-      line-height: 1.15;
-      letter-spacing: -.01em;
-    }
-    .block p { margin: 0 0 1rem; max-width: 46ch; }
-
-    .chart-box { min-width: 0; }
-    .chart { position: relative; height: 340px; }
-    .chart.tall { height: 400px; }
-    .chart.short { height: 300px; }
-
-    .fonte { margin: 1rem 0 0; font-size: .95rem; color: var(--muted); }
-
-    details { margin-top: .75rem; font-size: 1rem; }
-    summary { cursor: pointer; font-weight: 700; color: var(--blue); padding-block: .25rem; }
-    .table-scroll { overflow-x: auto; margin-top: .5rem; }
-    table { border-collapse: collapse; width: 100%; min-width: 320px; font-size: 1rem; }
-    caption { text-align: left; color: var(--muted); padding-bottom: .5rem; }
-    th, td { text-align: left; padding: .5rem .75rem; border-bottom: 1px solid var(--line); }
-    thead th { border-bottom: 2px solid var(--ink); }
-    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-
-    .definicao {
-      border-left: 6px solid var(--yellow);
-      background: var(--white);
-      padding: 1rem 1.25rem;
-      margin-top: 1.5rem;
-      max-width: 60ch;
-    }
-    .definicao p { margin: 0; max-width: none; }
-
-    /* ---------- Bengalas ---------- */
-    .intro { max-width: 62ch; margin: 0 0 1rem; }
-    .bengalas {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem 2rem;
-      margin: 2.5rem 0 0;
-      padding: 0;
-      list-style: none;
-    }
-    .bengala {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 1.25rem;
-      align-items: start;
-      border-top: 4px solid var(--ink);
-      padding-top: 1.25rem;
-    }
-    .bengala svg { width: 56px; height: auto; display: block; }
-    .bengala h3 { margin: 0 0 .25rem; font-size: 1.4rem; line-height: 1.2; }
-    .bengala .cond { margin: 0 0 .5rem; font-weight: 700; color: var(--blue); }
-    .bengala p { margin: 0; max-width: 34ch; }
-    .bengalas-lei { margin-top: 2.5rem; }
-
-    /* ---------- Datas e ações ---------- */
-    .datas { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; }
-    .data-item { border-top: 4px solid var(--ink); padding-top: 1rem; }
-    .data-item .dia { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
-    .data-item p { margin: .5rem 0 0; max-width: 40ch; }
-
-    .acoes { margin: 2rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.25rem; max-width: 62ch; }
-    .acoes li { padding-left: 1.5rem; position: relative; }
-    .acoes li::before {
-      content: ""; position: absolute; left: 0; top: .6em;
-      width: .7rem; height: .7rem; border-radius: 50%; background: var(--blue);
-    }
-    .acoes b { display: block; }
-
-    /* ---------- Fontes ---------- */
-    .fontes ol { padding-left: 1.25rem; max-width: 75ch; }
-    .fontes li { margin-bottom: .75rem; overflow-wrap: anywhere; }
-    .nota { color: var(--muted); font-size: 1rem; max-width: 70ch; }
-
-    footer { background: var(--ink); color: #DCE3F5; padding-block: 2rem; font-size: 1rem; }
-
-    /* ---------- Responsivo ---------- */
-    @media (max-width: 860px) {
-      .hero-grid, .block, .datas, .bengalas { grid-template-columns: 1fr; }
-      .hero-grid { gap: 2rem; }
-      .hero h1 { max-width: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .dot.on { animation: none; }
-    }
-  </style>
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d1117; --panel:#161b22; --panel-2:#1c232d; --line:#2b323d;
+    --text:#e8edf4; --muted:#9aa6b5; --accent:#4d94ff;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 16px 56px}
+  header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .logo{
+    width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(160deg,#1f2937,#0b0f16);color:#fff;font-size:22px;flex:none;
+    box-shadow:var(--shadow)
+  }
+  h1{font-size:1.28rem;margin:0;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:.86rem;margin:0}
+  .grid{display:grid;grid-template-columns:260px minmax(0,1fr) 280px;gap:16px;align-items:start}
+  @media (max-width:1080px){ .grid{grid-template-columns:1fr} }
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+  .card h2{font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+  canvas{display:block;width:100%;height:auto;border-radius:10px;background:#20242b}
+  .stagecard{padding:10px}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{
+    font:inherit;font-weight:600;font-size:.84rem;cursor:pointer;
+    background:var(--panel-2);color:var(--text);border:1px solid var(--line);
+    padding:8px 12px;border-radius:10px;transition:.15s;
+  }
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{filter:brightness(1.08);color:#fff}
+  .field{margin-bottom:14px}
+  .field label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:6px;gap:8px}
+  .field label b{color:var(--text);font-family:"JetBrains Mono",monospace;font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .toggle{display:flex;align-items:center;gap:9px;font-size:.84rem;margin-bottom:9px;cursor:pointer}
+  input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+  .stat span{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .stat b{font-family:"JetBrains Mono",monospace;font-size:1.02rem}
+  .fines{max-height:270px;overflow-y:auto;overflow-x:auto;margin:-2px}
+  table{width:100%;border-collapse:collapse;font-size:.76rem}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;padding:4px 6px;position:sticky;top:0;background:var(--panel)}
+  td{padding:5px 6px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace}
+  .tag{padding:1px 6px;border-radius:99px;font-size:.66rem;font-weight:700;white-space:nowrap}
+  .t-media{background:rgba(234,179,8,.18);color:#a16207}
+  .t-grave{background:rgba(249,115,22,.18);color:#c2410c}
+  .t-gravissima{background:rgba(220,38,38,.18);color:#b91c1c}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .t-media{color:#fde047}
+  :root:not([data-theme="light"]) .t-grave{color:#fdba74}
+  :root:not([data-theme="light"]) .t-gravissima{color:#fca5a5}}
+  .empty{color:var(--muted);font-size:.8rem;padding:10px 4px}
+  .phase{display:flex;align-items:center;gap:8px;font-size:.82rem;margin-bottom:10px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  details{margin-top:16px}
+  summary{cursor:pointer;font-weight:600;font-size:.9rem;padding:6px 0}
+  .doc{font-size:.87rem;color:var(--muted)}
+  .doc h3{color:var(--text);font-size:.92rem;margin:16px 0 6px}
+  .doc ul{margin:6px 0;padding-left:18px}
+  .doc code{font-family:"JetBrains Mono",monospace;background:var(--panel-2);border:1px solid var(--line);padding:1px 5px;border-radius:5px;font-size:.82em}
+  footer{margin-top:26px;color:var(--muted);font-size:.78rem;text-align:center}
+</style>
 </head>
 <body>
-  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<div class="wrap">
 
-  <header class="hero">
-    <div class="wrap">
-      <div class="topbar">
-        <strong>Pessoas com deficiência no Brasil</strong>
-        <nav aria-label="Seções da página">
-          <a href="#regioes">Regiões</a>
-          <a href="#idade">Idade</a>
-          <a href="#tipos">Tipos</a>
-          <a href="#educacao">Educação</a>
-          <a href="#bengalas">Bengalas</a>
-          <a href="#datas">Datas</a>
-          <a href="#fontes">Fontes</a>
-        </nav>
-      </div>
-
-      <div class="hero-grid">
-        <div>
-          <h1>A cada 100 brasileiros, 7 têm deficiência.</h1>
-          <p class="lead">Em 2022, o Censo do IBGE contou 14,4 milhões de pessoas com deficiência no Brasil: 7,3% da população com 2 anos ou mais.</p>
-          <p>Os gráficos abaixo mostram onde essas pessoas vivem, quais são as dificuldades mais comuns e como a desigualdade aparece na educação. Todos os números têm fonte.</p>
-        </div>
-
-        <figure class="dots-figure">
-          <div class="dots" id="dots" role="img" aria-label="Cem círculos, dos quais sete e um pedaço estão destacados, representando 7,3% da população com deficiência."></div>
-          <figcaption>Cada círculo representa 1 pessoa em 100. Fonte: IBGE, Censo 2022.</figcaption>
-        </figure>
-      </div>
+  <header class="top">
+    <div class="logo">🚦</div>
+    <div>
+      <h1>SimTrânsito — Cruzamento Inteligente</h1>
+      <p class="sub">Semáforos em ciclo, radar de velocidade com autuação (CTB), faixa de pedestres e fluxo de veículos.</p>
     </div>
   </header>
 
-  <main id="conteudo">
+  <div class="grid">
 
-    <!-- Regiões -->
-    <section id="regioes">
-      <div class="wrap block">
-        <div>
-          <h2>O Nordeste tem a maior proporção de pessoas com deficiência</h2>
-          <p>Na região, 8,6% da população tem deficiência. Em todas as regiões do país, o percentual é maior entre as mulheres do que entre os homens.</p>
-          <div class="definicao">
-            <p><b>Quem o Censo conta como pessoa com deficiência?</b> Quem respondeu "tem muita dificuldade" ou "não consegue de modo algum" em pelo menos uma atividade, como enxergar, ouvir, andar ou se comunicar, mesmo usando óculos, aparelho auditivo ou prótese.</p>
-          </div>
-        </div>
-        <div class="chart-box">
-          <div class="chart">
-            <canvas id="grafRegioes" role="img" aria-label="Gráfico de barras: percentual da população com deficiência por região e sexo. Nordeste tem o maior percentual, 9,5% das mulheres e 7,6% dos homens."></canvas>
-          </div>
-          <details>
-            <summary>Ver os dados em tabela</summary>
-            <div class="table-scroll">
-              <table>
-                <caption>Pessoas com 2 anos ou mais com deficiência (% da população), 2022</caption>
-                <thead><tr><th>Região</th><th class="num">Total</th><th class="num">Homens</th><th class="num">Mulheres</th></tr></thead>
-                <tbody>
-                  <tr><td>Brasil</td><td class="num">7,3</td><td class="num">6,4</td><td class="num">8,1</td></tr>
-                  <tr><td>Norte</td><td class="num">7,1</td><td class="num">6,6</td><td class="num">7,7</td></tr>
-                  <tr><td>Nordeste</td><td class="num">8,6</td><td class="num">7,6</td><td class="num">9,5</td></tr>
-                  <tr><td>Sudeste</td><td class="num">6,8</td><td class="num">5,9</td><td class="num">7,7</td></tr>
-                  <tr><td>Sul</td><td class="num">6,6</td><td class="num">5,9</td><td class="num">7,3</td></tr>
-                  <tr><td>Centro-Oeste</td><td class="num">6,5</td><td class="num">5,8</td><td class="num">7,2</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </details>
-          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022, resultados preliminares da amostra (<a href="#fontes">fonte 2</a>).</p>
-        </div>
+    <!-- ================= CONTROLES ================= -->
+    <section class="card">
+      <h2>Controles</h2>
+
+      <div class="field">
+        <label>Limite de velocidade <b><span id="vLimV">60</span> km/h</b></label>
+        <input type="range" id="vLim" min="30" max="110" step="10" value="60">
+      </div>
+
+      <div class="field">
+        <label>Fluxo de veículos <b><span id="vFluxV">6</span></b></label>
+        <input type="range" id="vFlux" min="1" max="12" step="1" value="6">
+      </div>
+
+      <div class="field">
+        <label>Fluxo de pedestres <b><span id="vPedV">4</span></b></label>
+        <input type="range" id="vPed" min="0" max="10" step="1" value="4">
+      </div>
+
+      <div class="field">
+        <label>Verde Norte–Sul <b><span id="vGnsV">10</span>s</b></label>
+        <input type="range" id="vGns" min="4" max="25" step="1" value="10">
+      </div>
+
+      <div class="field">
+        <label>Verde Leste–Oeste <b><span id="vGewV">10</span>s</b></label>
+        <input type="range" id="vGew" min="4" max="25" step="1" value="10">
+      </div>
+
+      <div class="field">
+        <label>Velocidade da simulação <b><span id="vSimV">1.0</span>×</b></label>
+        <input type="range" id="vSim" min="0.25" max="3" step="0.25" value="1">
+      </div>
+
+      <label class="toggle"><input type="checkbox" id="cRadar" checked> Radares ligados</label>
+      <label class="toggle"><input type="checkbox" id="cNight"> Modo noturno</label>
+      <label class="toggle"><input type="checkbox" id="cLabels" checked> Mostrar placas e velocidade</label>
+      <label class="toggle"><input type="checkbox" id="cInfra" checked> Motoristas infratores</label>
+
+      <div class="bar">
+        <button id="btnPlay" class="primary">⏸ Pausar</button>
+        <button id="btnPed">🚶 Chamar pedestre</button>
+        <button id="btnReset">↺ Reiniciar</button>
       </div>
     </section>
 
-    <!-- Idade -->
-    <section id="idade">
-      <div class="wrap block">
-        <div>
-          <h2>A deficiência é mais frequente com o passar dos anos</h2>
-          <p>Entre crianças de 2 a 14 anos, 2,2% têm deficiência. Entre quem tem 70 anos ou mais, o percentual chega a 27,5%: mais de uma pessoa em cada quatro.</p>
-        </div>
-        <div class="chart-box">
-          <div class="chart short">
-            <canvas id="grafIdade" role="img" aria-label="Gráfico de barras: percentual com deficiência por faixa de idade. 2,2% de 2 a 14 anos, 5,4% de 15 a 59 anos e 27,5% com 70 anos ou mais."></canvas>
-          </div>
-          <details>
-            <summary>Ver os dados em tabela</summary>
-            <div class="table-scroll">
-              <table>
-                <caption>Pessoas com deficiência por faixa de idade (% da população da faixa), 2022</caption>
-                <thead><tr><th>Faixa de idade</th><th class="num">%</th></tr></thead>
-                <tbody>
-                  <tr><td>2 a 14 anos</td><td class="num">2,2</td></tr>
-                  <tr><td>15 a 59 anos</td><td class="num">5,4</td></tr>
-                  <tr><td>70 anos ou mais</td><td class="num">27,5</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </details>
-          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>).</p>
-        </div>
+    <!-- ================= PALCO ================= -->
+    <section class="card stagecard">
+      <div class="phase">
+        <span class="dot" id="phDot" style="background:var(--green)"></span>
+        <span id="phText">Verde Norte–Sul</span>
+        <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;color:var(--muted)" id="phTime">0.0s</span>
+      </div>
+      <canvas id="cv" width="900" height="600"></canvas>
+      <div class="bar" style="justify-content:space-between">
+        <span class="sub">Clique na pista para soltar um pedestre na faixa mais próxima.</span>
+        <span class="sub" id="clock">00:00</span>
       </div>
     </section>
 
-    <!-- Tipos -->
-    <section id="tipos">
-      <div class="wrap block">
-        <div>
-          <h2>Enxergar é a dificuldade mais comum</h2>
-          <p>Dos 14,4 milhões de pessoas com deficiência, 7,9 milhões tinham dificuldade para enxergar, mesmo usando óculos ou lentes.</p>
-          <p>A soma dos grupos passa de 14,4 milhões porque uma pessoa pode ter mais de uma dificuldade. No Brasil, 2% da população tem duas ou mais.</p>
-        </div>
-        <div class="chart-box">
-          <div class="chart short">
-            <canvas id="grafTipos" role="img" aria-label="Gráfico de barras horizontais: pessoas com deficiência por tipo de dificuldade, em milhões. Enxergar 7,9; andar 5,2; pegar objetos 2,7; ouvir 2,6; limitação mental 1,4."></canvas>
-          </div>
-          <details>
-            <summary>Ver os dados em tabela</summary>
-            <div class="table-scroll">
-              <table>
-                <caption>Pessoas com deficiência por tipo de dificuldade, em milhões, 2022</caption>
-                <thead><tr><th>Dificuldade</th><th class="num">Milhões</th></tr></thead>
-                <tbody>
-                  <tr><td>Enxergar</td><td class="num">7,9</td></tr>
-                  <tr><td>Andar ou subir degraus</td><td class="num">5,2</td></tr>
-                  <tr><td>Pegar pequenos objetos ou abrir e fechar tampas</td><td class="num">2,7</td></tr>
-                  <tr><td>Ouvir</td><td class="num">2,6</td></tr>
-                  <tr><td>Limitação mental</td><td class="num">1,4</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </details>
-          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>).</p>
-        </div>
+    <!-- ================= PAINEL ================= -->
+    <section class="card">
+      <h2>Estatísticas</h2>
+      <div class="stats">
+        <div class="stat"><span>Veículos</span><b id="sCars">0</b></div>
+        <div class="stat"><span>Pedestres</span><b id="sPeds">0</b></div>
+        <div class="stat"><span>Multas</span><b id="sFines">0</b></div>
+        <div class="stat"><span>Vel. média</span><b id="sAvg">0</b></div>
+        <div class="stat"><span>Fila máx.</span><b id="sQueue">0</b></div>
+        <div class="stat"><span>Arrecadado</span><b id="sMoney">R$ 0</b></div>
+      </div>
+
+      <h2 style="margin-top:18px">Autuações do radar</h2>
+      <div class="fines">
+        <table id="tbl">
+          <thead><tr><th>Placa</th><th>Medida</th><th>Cons.</th><th>Infração</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty" id="finesEmpty">Nenhuma infração registrada até agora.</div>
       </div>
     </section>
+  </div>
 
-    <!-- Educação -->
-    <section id="educacao">
-      <div class="wrap block">
-        <div>
-          <h2>A desigualdade aparece na escola</h2>
-          <p>A taxa de analfabetismo entre pessoas com deficiência (15 anos ou mais) é de 21,3%, quatro vezes a das pessoas sem deficiência (5,2%).</p>
-          <p>Só 7,4% das pessoas com deficiência concluíram o ensino superior, contra 19,5% das pessoas sem deficiência.</p>
-        </div>
-        <div class="chart-box">
-          <div class="chart tall">
-            <canvas id="grafEducacao" role="img" aria-label="Gráfico de barras agrupadas comparando pessoas com e sem deficiência. Analfabetismo: 21,3% e 5,2%. Sem instrução ou fundamental incompleto: 63,1% e 32,3%. Ensino superior concluído: 7,4% e 19,5%."></canvas>
-          </div>
-          <details>
-            <summary>Ver os dados em tabela</summary>
-            <div class="table-scroll">
-              <table>
-                <caption>Indicadores de educação (%), 2022</caption>
-                <thead><tr><th>Indicador</th><th class="num">Com deficiência</th><th class="num">Sem deficiência</th></tr></thead>
-                <tbody>
-                  <tr><td>Analfabetismo (15 anos ou mais)</td><td class="num">21,3</td><td class="num">5,2</td></tr>
-                  <tr><td>Sem instrução ou fundamental incompleto (25 anos ou mais)</td><td class="num">63,1</td><td class="num">32,3</td></tr>
-                  <tr><td>Ensino superior concluído</td><td class="num">7,4</td><td class="num">19,5</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </details>
-          <p class="fonte">Fonte: IBGE, Censo Demográfico 2022 (<a href="#fontes">fonte 1</a>). As faixas de idade variam conforme o indicador.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bengalas -->
-    <section id="bengalas">
-      <div class="wrap">
-        <h2>As cores da bengala têm significado</h2>
-        <p class="intro">A bengala longa ajuda a pessoa a perceber obstáculos no caminho e a se locomover com segurança. A cor não é enfeite: ela informa a condição de quem usa. No Brasil, a Lei 14.951, de 2024, prevê três cores.</p>
-
-        <ul class="bengalas">
-          <li class="bengala">
-            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
-              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
-              <rect x="21" y="48" width="14" height="132" fill="#FFFFFF" stroke="#0E1A40" stroke-width="2"/>
-              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
-            </svg>
-            <div>
-              <h3>Bengala branca</h3>
-              <p class="cond">Pessoa com cegueira</p>
-              <p>É a mais conhecida. Em muitos países, indica que quem a usa é cego.</p>
-            </div>
-          </li>
-
-          <li class="bengala">
-            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
-              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
-              <rect x="21" y="48" width="14" height="132" fill="#1E8E3E" stroke="#0E1A40" stroke-width="2"/>
-              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
-            </svg>
-            <div>
-              <h3>Bengala verde</h3>
-              <p class="cond">Pessoa com baixa visão</p>
-              <p>Quem tem baixa visão pode enxergar em parte, em graus diferentes. Perceber algo não significa enxergar bem.</p>
-            </div>
-          </li>
-
-          <li class="bengala">
-            <svg viewBox="0 0 56 200" aria-hidden="true" focusable="false">
-              <rect x="19" y="6" width="18" height="44" rx="6" fill="#0E1A40"/>
-              <rect x="21" y="48" width="14" height="132" fill="#FFFFFF"/>
-              <rect x="21" y="66" width="14" height="22" fill="#D0222D"/>
-              <rect x="21" y="106" width="14" height="22" fill="#D0222D"/>
-              <rect x="21" y="146" width="14" height="22" fill="#D0222D"/>
-              <rect x="21" y="48" width="14" height="132" fill="none" stroke="#0E1A40" stroke-width="2"/>
-              <rect x="24" y="180" width="8" height="14" rx="4" fill="#0E1A40"/>
-            </svg>
-            <div>
-              <h3>Bengala vermelha e branca</h3>
-              <p class="cond">Pessoa com surdocegueira</p>
-              <p>A surdocegueira combina deficiência visual e auditiva, parcial ou total. A pessoa pode não ouvir quando você a chamar.</p>
-            </div>
-          </li>
-        </ul>
-
-        <div class="definicao bengalas-lei">
-          <p><b>O que diz a lei.</b> A Lei 14.951/2024 prevê que o SUS forneça a bengala longa na cor pedida por quem vai usá-la. Quando for preciso avaliar a condição da pessoa, a avaliação é feita por equipe multiprofissional. A lei também determina que o poder público divulgue o significado das cores (<a href="#fontes">fonte 3</a>).</p>
-        </div>
-
-        <ul class="acoes">
-          <li><b>Não segure, empurre nem mova a bengala de ninguém.</b> Ela é uma ferramenta de locomoção, como as pernas de quem a usa.</li>
-          <li><b>Diga quem você é ao falar.</b> Se a pessoa não vê, ela não sabe quem se aproximou. Se a bengala for vermelha e branca, ela pode não ouvir você.</li>
-          <li><b>Não duvide da bengala verde.</b> Quem tem baixa visão pode reconhecer um objeto e ainda assim precisar da bengala para se locomover.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Datas -->
-    <section id="datas">
-      <div class="wrap">
-        <h2>Duas datas para lembrar</h2>
-        <div class="datas">
-          <div class="data-item">
-            <div class="dia">21 de setembro</div>
-            <p><b>Dia Nacional de Luta da Pessoa com Deficiência</b>, no Brasil.</p>
-          </div>
-          <div class="data-item">
-            <div class="dia">3 de dezembro</div>
-            <p><b>Dia Internacional das Pessoas com Deficiência</b>, definido pela ONU.</p>
-          </div>
-        </div>
-
-        <ul class="acoes">
-          <li><b>Use o termo "pessoa com deficiência".</b> É o termo adotado pela Convenção da ONU e pela Lei Brasileira de Inclusão. Evite "portador" e "deficiente".</li>
-          <li><b>Pergunte antes de ajudar.</b> Cada pessoa sabe do que precisa. Ofereça ajuda e respeite a resposta.</li>
-          <li><b>Respeite vagas e espaços de acessibilidade.</b> Rampas, vagas reservadas e pisos táteis precisam estar livres.</li>
-          <li><b>Torne o que você publica acessível.</b> Descreva imagens, use legendas em vídeos e escolha cores com bom contraste.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Fontes -->
-    <section id="fontes" class="fontes">
-      <div class="wrap">
-        <h2>Fontes</h2>
-        <ol>
-          <li>IBGE, Agência de Notícias. <em>Censo 2022: Brasil tem 14,4 milhões de pessoas com deficiência</em>. 23 mai. 2025.
-            <a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43463-censo-2022-brasil-tem-14-4-milhoes-de-pessoas-com-deficiencia" target="_blank" rel="noopener">Acessar</a></li>
-          <li>IBGE. <em>Pessoas com deficiência e pessoas diagnosticadas com transtorno do espectro autista: resultados preliminares da amostra</em> (Censo Demográfico 2022).
-            <a href="https://agenciadenoticias.ibge.gov.br/media/com_mediaibge/arquivos/5ab58b8c2ab073e86c02984aae6b6d6c.pdf" target="_blank" rel="noopener">Acessar (PDF)</a></li>
-          <li>BRASIL. <em>Lei nº 14.951, de 2 de agosto de 2024</em>: dispõe sobre a coloração da órtese externa denominada bengala longa, para fins de identificação da condição de seu usuário. Texto integral reproduzido em Migalhas, 6 ago. 2024.
-            <a href="https://www.migalhas.com.br/quentes/412694/lei-preve-cores-para-bengalas-de-acordo-com-grau-de-deficiencia-visual" target="_blank" rel="noopener">Acessar</a></li>
-        </ol>
-        <p class="nota">Os números dos gráficos são do Censo Demográfico 2022. Outras pesquisas do IBGE, como a PNAD Contínua, usam metodologia própria e trazem valores diferentes. Confira os dados atualizados no site do IBGE.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      Página de conscientização sobre o Dia Nacional de Luta da Pessoa com Deficiência. Dados: IBGE.
+  <details>
+    <summary>Como o simulador funciona (regras aplicadas)</summary>
+    <div class="doc">
+      <h3>Semáforo</h3>
+      <ul>
+        <li>Ciclo de 6 fases: verde N–S → amarelo N–S → vermelho geral → verde L–O → amarelo L–O → vermelho geral.</li>
+        <li>O vermelho geral (1,5 s) é o <i>tempo de segurança</i> entre fases, para limpar o cruzamento.</li>
+        <li>No amarelo, o veículo só para se ainda tiver distância de frenagem suficiente; caso contrário atravessa (zona de dilema).</li>
+      </ul>
+      <h3>Radar</h3>
+      <ul>
+        <li>Dois radares fixos: aproximação Oeste→Leste e aproximação Norte→Sul, sinalizados com pórtico e faixa pintada.</li>
+        <li>Tolerância aplicada conforme a Resolução Contran: <code>−7 km/h</code> para limites até 100 km/h e <code>−5%</code> acima disso. O resultado é a <b>velocidade considerada</b>.</li>
+        <li>Classificação e valores (CTB, art. 218): até 20% acima → <b>média, R$ 130,16</b>; de 20% a 50% → <b>grave, R$ 195,23</b>; acima de 50% → <b>gravíssima ×3, R$ 880,41</b> com suspensão do direito de dirigir.</li>
+        <li>Placas geradas no padrão Mercosul (<code>ABC1D23</code>).</li>
+      </ul>
+      <h3>Pedestres</h3>
+      <ul>
+        <li>Quatro faixas de pedestres com foco próprio (boneco vermelho/verde). O verde de pedestre só abre quando o fluxo de veículos que cruza aquela faixa está fechado.</li>
+        <li>O pedestre só inicia a travessia se houver tempo restante suficiente de verde.</li>
+        <li>Veículo parado na faixa dá preferência: se houver pedestre sobre a faixa, o carro não avança (art. 70 do CTB).</li>
+      </ul>
+      <h3>Veículos</h3>
+      <ul>
+        <li>Quatro tipos: moto, carro, caminhão e ônibus — com comprimento, aceleração e velocidade desejada diferentes.</li>
+        <li>Modelo de perseguição: cada veículo mantém distância de segurança do que está à frente e freia com desaceleração limitada.</li>
+        <li>Com "motoristas infratores" ligado, parte da frota adota velocidade desejada acima do limite.</li>
+      </ul>
     </div>
-  </footer>
+  </details>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-  <script>
-    /* ---------- Círculos do topo: 7,3 em cada 100 ---------- */
-    (function () {
-      var box = document.getElementById('dots');
-      for (var i = 0; i < 100; i++) {
-        var d = document.createElement('span');
-        d.className = 'dot';
-        if (i < 7) { d.className += ' on'; d.style.setProperty('--i', i); }
-        else if (i === 7) { d.className += ' part'; }
-        box.appendChild(d);
+  <footer>Simulação educativa. Valores e regras baseados no Código de Trânsito Brasileiro — não substituem a legislação oficial.</footer>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* ============================ CONFIG ============================ */
+const W = 900, H = 600, CX = 450, CY = 300;
+const HALF = 40;           // meia-largura da pista
+const LANE = 20;           // deslocamento do eixo da faixa
+const CW_IN = 44, CW_OUT = 70;   // faixa de pedestres
+const STOP = 76;           // linha de retenção
+const PXM = 7.2;           // pixels por metro
+const KMH = v => v / PXM * 3.6;         // px/s -> km/h
+const PXS = k => k / 3.6 * PXM;         // km/h -> px/s
+const ACC = 60, DEC = 130;              // px/s²
+
+const cfg = {
+  limit: 60, flux: 6, pedFlux: 4, gNS: 10, gEW: 10, sim: 1,
+  radar: true, night: false, labels: true, infra: true
+};
+
+const DIRS = {
+  S: { ux:0,  uy:1,  sx:CX-LANE, sy:-40,  axis:'v', cw:'N' },
+  N: { ux:0,  uy:-1, sx:CX+LANE, sy:H+40, axis:'v', cw:'S' },
+  E: { ux:1,  uy:0,  sx:-40, sy:CY+LANE, axis:'h', cw:'W' },
+  W: { ux:-1, uy:0,  sx:W+40, sy:CY-LANE, axis:'h', cw:'E' }
+};
+const DIRKEYS = ['S','N','E','W'];
+
+// ponto da linha de retenção por direção
+const stopPoint = { S:[CX-LANE, CY-STOP], N:[CX+LANE, CY+STOP], E:[CX-STOP, CY+LANE], W:[CX+STOP, CY-LANE] };
+const proj = (d,x,y) => x*DIRS[d].ux + y*DIRS[d].uy;
+
+const RADARS = [
+  { dir:'E', x: CX-300, y: CY+LANE },
+  { dir:'S', x: CX-LANE, y: CY-250 }
+];
+
+const TYPES = [
+  { n:'moto',     len:20, wid:11, w:18, vf:1.12, col:['#e11d48','#0ea5e9','#111827'] },
+  { n:'carro',    len:34, wid:18, w:58, vf:1.00, col:['#2563eb','#dc2626','#f8fafc','#111827','#16a34a','#f59e0b','#94a3b8','#7c3aed'] },
+  { n:'caminhao', len:54, wid:22, w:14, vf:0.80, col:['#f8fafc','#1d4ed8','#b45309'] },
+  { n:'onibus',   len:62, wid:24, w:10, vf:0.78, col:['#2563eb','#dc2626','#16a34a'] }
+];
+const TW = TYPES.reduce((a,t)=>a+t.w,0);
+
+/* ============================ ESTADO ============================ */
+let cars=[], peds=[], flashes=[], fines=[];
+let phase=0, phaseT=0, running=true, simClock=0;
+let stat = { cars:0, peds:0, fines:0, money:0, queue:0, sumV:0, nV:0 };
+
+const PHASES = [
+  { k:'NS_G', label:'Verde Norte–Sul',    col:'var(--green)' },
+  { k:'NS_Y', label:'Amarelo Norte–Sul',  col:'var(--yellow)' },
+  { k:'AR1',  label:'Vermelho geral',     col:'var(--red)' },
+  { k:'EW_G', label:'Verde Leste–Oeste',  col:'var(--green)' },
+  { k:'EW_Y', label:'Amarelo Leste–Oeste',col:'var(--yellow)' },
+  { k:'AR2',  label:'Vermelho geral',     col:'var(--red)' }
+];
+const phaseDur = i => [cfg.gNS,3,1.5,cfg.gEW,3,1.5][i];
+
+function sig(dir){
+  const v = DIRS[dir].axis === 'v';
+  if (phase===0) return v ? 'green' : 'red';
+  if (phase===1) return v ? 'yellow': 'red';
+  if (phase===3) return v ? 'red'   : 'green';
+  if (phase===4) return v ? 'red'   : 'yellow';
+  return 'red';
+}
+// foco de pedestre: faixas N/S cruzam a via vertical -> verde quando L–O está verde
+const pedGreen = cw => (cw==='N'||cw==='S') ? phase===3 : phase===0;
+const pedTimeLeft = cw => (pedGreen(cw) ? phaseDur(phase)-phaseT : 0);
+
+/* ============================ UTIL ============================ */
+const rnd = (a,b)=>a+Math.random()*(b-a);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const L = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const plate = () => pick(L)+pick(L)+pick(L)+Math.floor(rnd(0,10))+pick(L)+Math.floor(rnd(0,10))+Math.floor(rnd(0,10));
+const brl = v => "R$ " + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function pickType(){
+  let r = Math.random()*TW;
+  for (const t of TYPES){ r -= t.w; if (r<=0) return t; }
+  return TYPES[1];
+}
+
+/* ============================ VEÍCULOS ============================ */
+function spawn(dir){
+  const D = DIRS[dir], t = pickType();
+  const p0 = proj(dir, D.sx, D.sy);
+  for (const c of cars) if (c.dir===dir && c.p - p0 < t.len + 40) return;
+  let des = cfg.limit * rnd(0.86, 1.02);
+  if (cfg.infra && Math.random() < 0.34) des = cfg.limit * rnd(1.12, 1.68);
+  cars.push({
+    dir, x:D.sx, y:D.sy, p:p0, prev:p0,
+    speed: PXS(des*0.9), vmax: PXS(des*t.vf),
+    len:t.len, wid:t.wid, type:t.n, color:pick(t.col),
+    plate:plate(), stopP: proj(dir, stopPoint[dir][0], stopPoint[dir][1]),
+    radared:{}, id:Math.random()
+  });
+  stat.cars++;
+}
+
+function pedBlocks(dir){
+  const cw = DIRS[dir].cw;
+  for (const p of peds){
+    if (p.cw!==cw || p.state!=='cross') continue;
+    if (cw==='N'||cw==='S'){ if (p.x > CX-HALF-8 && p.x < CX+HALF+8) return true; }
+    else { if (p.y > CY-HALF-8 && p.y < CY+HALF+8) return true; }
+  }
+  return false;
+}
+
+function updateCars(dt){
+  const byDir = { S:[], N:[], E:[], W:[] };
+  for (const c of cars) byDir[c.dir].push(c);
+  let queue = 0;
+
+  for (const dir of DIRKEYS){
+    const list = byDir[dir].sort((a,b)=>b.p-a.p);
+    const st = sig(dir), blocked = pedBlocks(dir);
+
+    for (let i=0;i<list.length;i++){
+      const c = list[i];
+      let vT = c.vmax;
+
+      // veículo à frente
+      if (i>0){
+        const L2 = list[i-1];
+        const gap = (L2.p - L2.len/2) - (c.p + c.len/2) - 8;
+        vT = Math.min(vT, gap<=0 ? 0 : Math.sqrt(Math.max(0, L2.speed*L2.speed + 2*DEC*gap)));
       }
-    })();
 
-    /* ---------- Gráficos ---------- */
-    if (window.Chart) {
-      var INK = '#0E1A40', BLUE = '#1B4DDB', ORANGE = '#B85400', GRID = 'rgba(14,26,64,.14)';
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      Chart.defaults.font.family = "'Atkinson Hyperlegible', system-ui, sans-serif";
-      Chart.defaults.font.size = 14;
-      Chart.defaults.color = INK;
-      if (reduce) Chart.defaults.animation = false;
-
-      var pct = function (v) { return v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; };
-      var mi  = function (v) { return v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' mi'; };
-
-      /* escreve o valor na ponta de cada barra */
-      var rotulos = {
-        id: 'rotulos',
-        afterDatasetsDraw: function (chart, args, opts) {
-          var ctx = chart.ctx, horizontal = chart.options.indexAxis === 'y';
-          ctx.save();
-          ctx.font = '700 14px ' + Chart.defaults.font.family;
-          ctx.fillStyle = INK;
-          chart.data.datasets.forEach(function (ds, i) {
-            chart.getDatasetMeta(i).data.forEach(function (bar, j) {
-              var txt = opts.format(ds.data[j]);
-              if (horizontal) { ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(txt, bar.x + 6, bar.y); }
-              else { ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText(txt, bar.x, bar.y - 5); }
-            });
-          });
-          ctx.restore();
-        }
-      };
-
-      function base(fmt, horizontal, legend) {
-        var valueAxis = {
-          beginAtZero: true, grace: '8%',
-          grid: { color: GRID },
-          border: { display: false },
-          ticks: { callback: function (v) { return fmt === pct ? v + '%' : v; } }
-        };
-        var catAxis = { grid: { display: false }, ticks: { font: { size: 14 } } };
-        return {
-          responsive: true,
-          maintainAspectRatio: false,
-          indexAxis: horizontal ? 'y' : 'x',
-          layout: { padding: horizontal ? { right: 56 } : { top: 22 } },
-          scales: horizontal ? { x: valueAxis, y: catAxis } : { x: catAxis, y: valueAxis },
-          plugins: {
-            legend: { display: legend, position: 'top', align: 'start', labels: { boxWidth: 14, boxHeight: 14, padding: 16 } },
-            rotulos: { format: fmt },
-            tooltip: {
-              callbacks: {
-                label: function (c) {
-                  var v = horizontal ? c.parsed.x : c.parsed.y;
-                  return (c.dataset.label ? c.dataset.label + ': ' : '') + fmt(v);
-                }
-              }
-            }
-          }
-        };
+      // sinal e faixa de pedestres
+      const d = c.stopP - c.p;
+      if (d > -4){
+        let must = false;
+        if (st==='red') must = true;
+        else if (st==='yellow'){ const bd = (c.speed*c.speed)/(2*DEC); must = d > bd*1.15 + 6; }
+        if (blocked) must = true;
+        if (must) vT = Math.min(vT, Math.sqrt(2*DEC*Math.max(0, d-4)));
       }
 
-      /* Regiões */
-      new Chart(document.getElementById('grafRegioes'), {
-        type: 'bar',
-        plugins: [rotulos],
-        data: {
-          labels: ['Norte', 'Nordeste', 'Sudeste', 'Sul', 'Centro-Oeste'],
-          datasets: [
-            { label: 'Homens',   data: [6.6, 7.6, 5.9, 5.9, 5.8], backgroundColor: BLUE,   borderRadius: 3 },
-            { label: 'Mulheres', data: [7.7, 9.5, 7.7, 7.3, 7.2], backgroundColor: ORANGE, borderRadius: 3 }
-          ]
-        },
-        options: base(pct, false, true)
-      });
+      if (c.speed < vT) c.speed = Math.min(vT, c.speed + ACC*dt);
+      else c.speed = Math.max(vT, c.speed - DEC*1.5*dt);
+      c.speed = Math.max(0, c.speed);
+      if (c.speed < 12 && d > -4 && d < 200) queue++;
 
-      /* Idade */
-      new Chart(document.getElementById('grafIdade'), {
-        type: 'bar',
-        plugins: [rotulos],
-        data: {
-          labels: ['2 a 14 anos', '15 a 59 anos', '70 anos ou mais'],
-          datasets: [{ label: 'Com deficiência', data: [2.2, 5.4, 27.5], backgroundColor: BLUE, borderRadius: 3 }]
-        },
-        options: base(pct, false, false)
-      });
+      c.prev = c.p;
+      c.p += c.speed*dt;
+      c.x += DIRS[dir].ux * c.speed*dt;
+      c.y += DIRS[dir].uy * c.speed*dt;
 
-      /* Tipos de dificuldade */
-      new Chart(document.getElementById('grafTipos'), {
-        type: 'bar',
-        plugins: [rotulos],
-        data: {
-          labels: ['Enxergar', 'Andar ou subir degraus', 'Pegar objetos', 'Ouvir', 'Limitação mental'],
-          datasets: [{ label: 'Pessoas (milhões)', data: [7.9, 5.2, 2.7, 2.6, 1.4], backgroundColor: BLUE, borderRadius: 3 }]
-        },
-        options: base(mi, true, false)
-      });
-
-      /* Educação */
-      new Chart(document.getElementById('grafEducacao'), {
-        type: 'bar',
-        plugins: [rotulos],
-        data: {
-          labels: [
-            ['Analfabetismo', '(15 anos ou mais)'],
-            ['Sem instrução ou', 'fundamental incompleto', '(25 anos ou mais)'],
-            ['Ensino superior', 'concluído']
-          ],
-          datasets: [
-            { label: 'Com deficiência', data: [21.3, 63.1, 7.4],  backgroundColor: ORANGE, borderRadius: 3 },
-            { label: 'Sem deficiência', data: [5.2, 32.3, 19.5],  backgroundColor: BLUE,   borderRadius: 3 }
-          ]
-        },
-        options: base(pct, false, true)
-      });
+      if (cfg.radar) checkRadar(c);
     }
-  </script>
+  }
+  stat.queue = Math.max(stat.queue, queue);
+  cars = cars.filter(c => c.x>-120 && c.x<W+120 && c.y>-120 && c.y<H+120);
+}
+
+/* ============================ RADAR / MULTAS ============================ */
+function classify(measured){
+  const lim = cfg.limit;
+  const cons = lim<=100 ? measured-7 : measured*0.95;
+  if (cons <= lim) return null;
+  const pct = (cons-lim)/lim*100;
+  if (pct <= 20)  return { cons, pct, tipo:'Média',      cls:'t-media',      val:130.16, pts:4 };
+  if (pct <= 50)  return { cons, pct, tipo:'Grave',      cls:'t-grave',      val:195.23, pts:5 };
+  return            { cons, pct, tipo:'Gravíssima', cls:'t-gravissima', val:880.41, pts:7 };
+}
+
+function checkRadar(c){
+  for (let i=0;i<RADARS.length;i++){
+    const r = RADARS[i];
+    if (r.dir !== c.dir || c.radared[i]) continue;
+    const rp = proj(c.dir, r.x, r.y);
+    if (c.prev < rp && c.p >= rp){
+      c.radared[i] = true;
+      const measured = Math.round(KMH(c.speed));
+      stat.sumV += measured; stat.nV++;
+      const inf = classify(measured);
+      if (inf){
+        stat.fines++; stat.money += inf.val;
+        fines.unshift({ plate:c.plate, measured, ...inf });
+        if (fines.length>60) fines.pop();
+        flashes.push({ x:r.x, y:r.y, t:0.22 });
+        renderFines();
+      }
+    }
+  }
+}
+
+/* ============================ PEDESTRES ============================ */
+const CWPOS = {
+  N:{ fix:CY-(CW_IN+CW_OUT)/2, from:CX-64, to:CX+64, axis:'h' },
+  S:{ fix:CY+(CW_IN+CW_OUT)/2, from:CX-64, to:CX+64, axis:'h' },
+  W:{ fix:CX-(CW_IN+CW_OUT)/2, from:CY-64, to:CY+64, axis:'v' },
+  E:{ fix:CX+(CW_IN+CW_OUT)/2, from:CY-64, to:CY+64, axis:'v' }
+};
+const SKIN=['#f5d0a9','#d9a066','#8d5524','#f1c27d','#5c3317'];
+const SHIRT=['#2563eb','#dc2626','#16a34a','#f59e0b','#7c3aed','#0ea5e9','#e11d48','#f8fafc'];
+
+function spawnPed(cw){
+  cw = cw || pick(['N','S','E','W']);
+  const P = CWPOS[cw], back = Math.random()<0.5;
+  const s = back ? P.to : P.from, sign = back ? -1 : 1;
+  const p = { cw, state:'wait', sign, speed:rnd(24,32), skin:pick(SKIN), shirt:pick(SHIRT), ph:Math.random()*6 };
+  if (P.axis==='h'){ p.x=s; p.y=P.fix+rnd(-6,6); } else { p.y=s; p.x=P.fix+rnd(-6,6); }
+  peds.push(p);
+}
+
+function updatePeds(dt){
+  for (const p of peds){
+    const P = CWPOS[p.cw];
+    if (p.state==='wait'){
+      const dist = Math.abs(P.to-P.from);
+      if (pedGreen(p.cw) && pedTimeLeft(p.cw) > dist/p.speed*0.75) p.state='cross';
+    }
+    if (p.state==='cross'){
+      p.ph += dt*8;
+      if (P.axis==='h') p.x += p.sign*p.speed*dt; else p.y += p.sign*p.speed*dt;
+      const v = P.axis==='h' ? p.x : p.y;
+      if ((p.sign>0 && v>=P.to) || (p.sign<0 && v<=P.from)){ p.state='done'; stat.peds++; }
+    }
+  }
+  peds = peds.filter(p=>p.state!=='done');
+}
+
+/* ============================ DESENHO ============================ */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+function fitCanvas(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  cv.width = W*dpr; cv.height = H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+fitCanvas(); window.addEventListener('resize', fitCanvas);
+
+function roadColors(){
+  return cfg.night
+    ? { grass:'#12331f', side:'#3a3f47', asf:'#191c22', mark:'#c9cfd8', yel:'#c9a227' }
+    : { grass:'#2f7a46', side:'#c8ccd3', asf:'#33383f', mark:'#f2f5f9', yel:'#f2c230' };
+}
+
+function rrect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+function drawRoad(){
+  const C = roadColors();
+  ctx.fillStyle = C.grass; ctx.fillRect(0,0,W,H);
+
+  // quarteirões / calçadas
+  ctx.fillStyle = C.side;
+  const blocks = [[0,0,CX-HALF-16,CY-HALF-16],[CX+HALF+16,0,W-(CX+HALF+16),CY-HALF-16],
+                  [0,CY+HALF+16,CX-HALF-16,H-(CY+HALF+16)],[CX+HALF+16,CY+HALF+16,W-(CX+HALF+16),H-(CY+HALF+16)]];
+  for (const b of blocks){ rrect(b[0]-10,b[1]-10,b[2]+20,b[3]+20,18); ctx.fill(); }
+
+  // asfalto
+  ctx.fillStyle = C.asf;
+  ctx.fillRect(0, CY-HALF, W, HALF*2);
+  ctx.fillRect(CX-HALF, 0, HALF*2, H);
+
+  // eixo tracejado
+  ctx.strokeStyle = C.yel; ctx.lineWidth = 3; ctx.setLineDash([18,16]);
+  ctx.beginPath();
+  ctx.moveTo(0,CY); ctx.lineTo(CX-CW_OUT,CY); ctx.moveTo(CX+CW_OUT,CY); ctx.lineTo(W,CY);
+  ctx.moveTo(CX,0); ctx.lineTo(CX,CY-CW_OUT); ctx.moveTo(CX,CY+CW_OUT); ctx.lineTo(CX,H);
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // bordas
+  ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0,CY-HALF); ctx.lineTo(CX-HALF,CY-HALF); ctx.moveTo(CX+HALF,CY-HALF); ctx.lineTo(W,CY-HALF);
+  ctx.moveTo(0,CY+HALF); ctx.lineTo(CX-HALF,CY+HALF); ctx.moveTo(CX+HALF,CY+HALF); ctx.lineTo(W,CY+HALF);
+  ctx.moveTo(CX-HALF,0); ctx.lineTo(CX-HALF,CY-HALF); ctx.moveTo(CX-HALF,CY+HALF); ctx.lineTo(CX-HALF,H);
+  ctx.moveTo(CX+HALF,0); ctx.lineTo(CX+HALF,CY-HALF); ctx.moveTo(CX+HALF,CY+HALF); ctx.lineTo(CX+HALF,H);
+  ctx.stroke();
+
+  // faixas de pedestres (zebra)
+  ctx.fillStyle = C.mark;
+  for (const cw of ['N','S','W','E']){
+    const horiz = (cw==='N'||cw==='S');
+    const base = horiz ? (cw==='N'?CY-CW_OUT:CY+CW_IN) : (cw==='W'?CX-CW_OUT:CX+CW_IN);
+    for (let k=-4;k<4;k++){
+      const off = k*10 + 2;
+      if (horiz) ctx.fillRect(CX+off, base, 7, CW_OUT-CW_IN);
+      else       ctx.fillRect(base, CY+off, CW_OUT-CW_IN, 7);
+    }
+  }
+
+  // linhas de retenção
+  ctx.fillStyle = C.mark;
+  ctx.fillRect(CX-HALF, CY-STOP-5, HALF, 5);          // S
+  ctx.fillRect(CX, CY+STOP, HALF, 5);                 // N
+  ctx.fillRect(CX-STOP-5, CY, 5, HALF);               // E
+  ctx.fillRect(CX+STOP, CY-HALF, 5, HALF);            // W
+}
+
+function drawRadarMarks(){
+  if (!cfg.radar) return;
+  const C = roadColors();
+  ctx.save();
+  for (const r of RADARS){
+    ctx.fillStyle = 'rgba(255,255,255,.65)';
+    if (r.dir==='E') ctx.fillRect(r.x-2, CY, 4, HALF);
+    else ctx.fillRect(CX-HALF, r.y-2, HALF, 4);
+  }
+  ctx.restore();
+}
+
+function drawRadarGantry(){
+  if (!cfg.radar) return;
+  for (const r of RADARS){
+    const vertical = r.dir==='S';
+    const px = vertical ? CX-HALF-16 : r.x;
+    const py = vertical ? r.y : CY+HALF+16;
+    ctx.save();
+    // poste
+    ctx.fillStyle = '#4b5563';
+    if (vertical){ ctx.fillRect(px-6, py-4, 8, 8); ctx.fillRect(px-6, py-4, 44, 7); }
+    else { ctx.fillRect(px-4, py-6, 8, 10); ctx.fillRect(px-4, py-46, 7, 44); }
+    // caixa do radar
+    const bx = vertical ? px+30 : px-12, by = vertical ? py-22 : py-58;
+    ctx.fillStyle = '#111827'; rrect(bx,by,26,18,4); ctx.fill();
+    ctx.fillStyle = '#374151'; ctx.fillRect(bx+3,by+4,8,10);
+    ctx.fillStyle = cfg.night ? '#67e8f9' : '#22d3ee'; ctx.fillRect(bx+14,by+5,8,8);
+    // placa de limite
+    ctx.beginPath(); ctx.arc(bx+13, by+34, 12, 0, Math.PI*2);
+    ctx.fillStyle='#fff'; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle='#dc2626'; ctx.stroke();
+    ctx.fillStyle='#111827'; ctx.font='700 11px "JetBrains Mono", monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(String(cfg.limit), bx+13, by+34);
+    ctx.fillStyle = cfg.night ? '#cbd5e1' : '#0f172a';
+    ctx.font='600 9px Inter, sans-serif'; ctx.fillText('RADAR', bx+13, by+50);
+    ctx.restore();
+  }
+  // flash
+  for (const f of flashes){
+    const a = Math.max(0, f.t/0.22);
+    ctx.save(); ctx.globalAlpha = a*0.85;
+    const g = ctx.createRadialGradient(f.x,f.y,2,f.x,f.y,110);
+    g.addColorStop(0,'#ffffff'); g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(f.x,f.y,110,0,Math.PI*2); ctx.fill(); ctx.restore();
+  }
+}
+
+function drawCars(){
+  for (const c of cars){
+    const D = DIRS[c.dir], vert = D.axis==='v';
+    const w = vert ? c.wid : c.len, h = vert ? c.len : c.wid;
+    ctx.save();
+    // sombra
+    ctx.fillStyle='rgba(0,0,0,.28)'; rrect(c.x-w/2+2, c.y-h/2+3, w, h, 5); ctx.fill();
+    // corpo
+    ctx.fillStyle = c.color; rrect(c.x-w/2, c.y-h/2, w, h, 5); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=1; ctx.stroke();
+    // vidros
+    ctx.fillStyle='rgba(20,26,38,.62)';
+    if (c.type!=='moto'){
+      if (vert) ctx.fillRect(c.x-w/2+3, c.y-h/2+(D.uy>0? h*0.55 : h*0.16), w-6, h*0.26);
+      else      ctx.fillRect(c.x-w/2+(D.ux>0? w*0.55 : w*0.16), c.y-h/2+3, w*0.26, h-6);
+    }
+    // faróis / lanternas
+    const lit = cfg.night;
+    const fx = c.x + D.ux*(vert?0:w/2-2), fy = c.y + D.uy*(vert?h/2-2:0);
+    ctx.fillStyle = lit ? '#fff7c2' : '#e8e8d8';
+    ctx.beginPath(); ctx.arc(fx - (vert?6:0), fy - (vert?0:6), 2.2, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(fx + (vert?6:0), fy + (vert?0:6), 2.2, 0, 7); ctx.fill();
+    // freio
+    if (c.speed < 14){
+      const bx = c.x - D.ux*(vert?0:w/2-2), by = c.y - D.uy*(vert?h/2-2:0);
+      ctx.fillStyle='#ff3b30';
+      ctx.beginPath(); ctx.arc(bx-(vert?6:0), by-(vert?0:6),2.4,0,7); ctx.fill();
+      ctx.beginPath(); ctx.arc(bx+(vert?6:0), by+(vert?0:6),2.4,0,7); ctx.fill();
+    }
+    ctx.restore();
+
+    if (cfg.labels){
+      const kmh = Math.round(KMH(c.speed));
+      const over = kmh > cfg.limit + 7;
+      ctx.save();
+      ctx.font='600 9px "JetBrains Mono", monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      const tx = c.x + (vert ? (D.ux||0) + (c.dir==='S'?-26:26) : 0);
+      const ty = c.y + (vert ? 0 : (c.dir==='E'? 20 : -20));
+      ctx.fillStyle='rgba(0,0,0,.55)';
+      rrect(tx-24, ty-8, 48, 16, 5); ctx.fill();
+      ctx.fillStyle = over ? '#ff6b6b' : '#e6edf6';
+      ctx.fillText(kmh+" km/h", tx, ty);
+      ctx.restore();
+    }
+  }
+}
+
+function drawPeds(){
+  for (const p of peds){
+    const walking = p.state==='cross';
+    const sw = walking ? Math.sin(p.ph)*3 : 0;
+    ctx.save();
+    ctx.fillStyle='rgba(0,0,0,.25)';
+    ctx.beginPath(); ctx.ellipse(p.x, p.y+7, 5, 2.4, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = p.shirt; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(p.x, p.y-3); ctx.lineTo(p.x, p.y+3); ctx.stroke();
+    ctx.strokeStyle = '#1f2937'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(p.x, p.y+3); ctx.lineTo(p.x-2-sw, p.y+8);
+    ctx.moveTo(p.x, p.y+3); ctx.lineTo(p.x+2+sw, p.y+8); ctx.stroke();
+    ctx.fillStyle = p.skin;
+    ctx.beginPath(); ctx.arc(p.x, p.y-6, 3.4, 0, 7); ctx.fill();
+    if (p.state==='wait'){
+      ctx.fillStyle='rgba(255,255,255,.75)'; ctx.font='9px Inter, sans-serif';
+      ctx.textAlign='center'; ctx.fillText('⏳', p.x, p.y-13);
+    }
+    ctx.restore();
+  }
+}
+
+function lampColors(state){
+  const on = c=>c, off = 'rgba(255,255,255,.10)';
+  return {
+    r: state==='red'    ? '#ff4136' : off,
+    y: state==='yellow' ? '#ffd400' : off,
+    g: state==='green'  ? '#2ecc40' : off
+  };
+}
+
+function drawLightHead(x,y,state){
+  ctx.save();
+  ctx.fillStyle='#1b2028'; rrect(x,y,16,42,4); ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.5)'; ctx.stroke();
+  const c = lampColors(state), cols=[c.r,c.y,c.g];
+  for (let i=0;i<3;i++){
+    const cy2 = y+8+i*13;
+    const lit = cols[i] !== 'rgba(255,255,255,.10)';
+    if (lit){
+      const g = ctx.createRadialGradient(x+8,cy2,1,x+8,cy2,14);
+      g.addColorStop(0, cols[i]); g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.globalAlpha = cfg.night ? .85 : .45;
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x+8,cy2,14,0,7); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    ctx.fillStyle = cols[i];
+    ctx.beginPath(); ctx.arc(x+8, cy2, 4.6, 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawPedHead(x,y,green){
+  ctx.save();
+  ctx.fillStyle='#1b2028'; rrect(x,y,15,26,4); ctx.fill();
+  const cr = green ? 'rgba(255,255,255,.10)' : '#ff4136';
+  const cg = green ? '#2ecc40' : 'rgba(255,255,255,.10)';
+  ctx.font='9px Inter, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle = cr; ctx.fillText('🧍', x+7.5, y+7);
+  ctx.fillStyle = 'transparent';
+  ctx.beginPath(); ctx.arc(x+7.5, y+7, 4, 0, 7); ctx.fillStyle=cr; ctx.fill();
+  ctx.beginPath(); ctx.arc(x+7.5, y+19, 4, 0, 7); ctx.fillStyle=cg; ctx.fill();
+  ctx.restore();
+}
+
+function drawSignals(){
+  const poles = [
+    { x:CX-HALF-34, y:CY-HALF-56, dir:'S' },
+    { x:CX+HALF+18, y:CY+HALF+14, dir:'N' },
+    { x:CX-HALF-34, y:CY+HALF+14, dir:'E' },
+    { x:CX+HALF+18, y:CY-HALF-56, dir:'W' }
+  ];
+  for (const p of poles){
+    ctx.fillStyle='#4b5563'; ctx.fillRect(p.x+5, p.y+42, 6, 16);
+    drawLightHead(p.x, p.y, sig(p.dir));
+  }
+  const pedPoles = [
+    { x:CX+HALF+18, y:CY-CW_OUT-6, cw:'N' },
+    { x:CX-HALF-34, y:CY+CW_IN+4,  cw:'S' },
+    { x:CX-CW_OUT-10, y:CY-HALF-34, cw:'W' },
+    { x:CX+CW_IN+16,  y:CY+HALF+16, cw:'E' }
+  ];
+  for (const p of pedPoles) drawPedHead(p.x, p.y, pedGreen(p.cw));
+}
+
+function drawNight(){
+  if (!cfg.night) return;
+  ctx.save();
+  ctx.fillStyle='rgba(6,10,24,.5)'; ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation='lighter';
+  for (const c of cars){
+    const D=DIRS[c.dir], vert=D.axis==='v';
+    const w = vert ? c.wid : c.len, h = vert ? c.len : c.wid;
+    const fx=c.x+D.ux*(vert?0:w/2), fy=c.y+D.uy*(vert?h/2:0);
+    const tx=fx+D.ux*90, ty=fy+D.uy*90;
+    const g=ctx.createLinearGradient(fx,fy,tx,ty);
+    g.addColorStop(0,'rgba(255,244,190,.32)'); g.addColorStop(1,'rgba(255,244,190,0)');
+    ctx.fillStyle=g; ctx.beginPath();
+    ctx.moveTo(fx-(vert?7:0), fy-(vert?0:7));
+    ctx.lineTo(tx-(vert?30:0), ty-(vert?0:30));
+    ctx.lineTo(tx+(vert?30:0), ty+(vert?0:30));
+    ctx.lineTo(fx+(vert?7:0), fy+(vert?0:7));
+    ctx.closePath(); ctx.fill();
+  }
+  // postes de iluminação
+  for (const [lx,ly] of [[CX-HALF-30,CY-HALF-30],[CX+HALF+30,CY-HALF-30],[CX-HALF-30,CY+HALF+30],[CX+HALF+30,CY+HALF+30]]){
+    const g=ctx.createRadialGradient(lx,ly,4,lx,ly,120);
+    g.addColorStop(0,'rgba(255,226,150,.28)'); g.addColorStop(1,'rgba(255,226,150,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(lx,ly,120,0,7); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function draw(){
+  drawRoad();
+  drawRadarMarks();
+  drawCars();
+  drawPeds();
+  drawNight();
+  drawSignals();
+  drawRadarGantry();
+}
+
+/* ============================ LOOP ============================ */
+let last = performance.now(), spawnAcc = 0, pedAcc = 0;
+
+function tick(now){
+  const raw = Math.min((now-last)/1000, 0.05); last = now;
+  if (running){
+    const dt = raw*cfg.sim;
+    simClock += dt;
+    phaseT += dt;
+    if (phaseT >= phaseDur(phase)){ phaseT = 0; phase = (phase+1)%6; }
+
+    spawnAcc += dt*cfg.flux/4;
+    while (spawnAcc >= 1){ spawnAcc -= 1; spawn(pick(DIRKEYS)); }
+    pedAcc += dt*cfg.pedFlux/6;
+    while (pedAcc >= 1){ pedAcc -= 1; if (cfg.pedFlux>0) spawnPed(); }
+
+    updateCars(dt);
+    updatePeds(dt);
+    for (const f of flashes) f.t -= raw;
+    flashes = flashes.filter(f=>f.t>0);
+  }
+  draw();
+  updateHUD();
+  requestAnimationFrame(tick);
+}
+
+/* ============================ HUD ============================ */
+const $ = id => document.getElementById(id);
+function updateHUD(){
+  $('phDot').style.background = PHASES[phase].col;
+  $('phText').textContent = PHASES[phase].label;
+  $('phTime').textContent = Math.max(0, phaseDur(phase)-phaseT).toFixed(1)+'s';
+  $('sCars').textContent = stat.cars;
+  $('sPeds').textContent = stat.peds;
+  $('sFines').textContent = stat.fines;
+  $('sQueue').textContent = stat.queue;
+  $('sAvg').textContent = (stat.nV ? Math.round(stat.sumV/stat.nV) : 0)+' km/h';
+  $('sMoney').textContent = brl(stat.money);
+  const m = Math.floor(simClock/60), s = Math.floor(simClock%60);
+  $('clock').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function renderFines(){
+  const tb = $('tbody');
+  $('finesEmpty').style.display = fines.length ? 'none' : 'block';
+  tb.innerHTML = fines.slice(0,40).map(f => `
+    <tr>
+      <td>${f.plate}</td>
+      <td>${f.measured}</td>
+      <td>${Math.round(f.cons)}</td>
+      <td><span class="tag ${f.cls}">${f.tipo}</span><br><span style="color:var(--muted)">${brl(f.val)} · ${f.pts}pt</span></td>
+    </tr>`).join('');
+}
+
+/* ============================ EVENTOS ============================ */
+function bindRange(id, key, out, fmt){
+  const el = $(id);
+  el.addEventListener('input', () => {
+    cfg[key] = parseFloat(el.value);
+    $(out).textContent = fmt ? fmt(cfg[key]) : cfg[key];
+  });
+}
+bindRange('vLim','limit','vLimV');
+bindRange('vFlux','flux','vFluxV');
+bindRange('vPed','pedFlux','vPedV');
+bindRange('vGns','gNS','vGnsV');
+bindRange('vGew','gEW','vGewV');
+bindRange('vSim','sim','vSimV', v=>v.toFixed(2)+'');
+
+$('cRadar').addEventListener('change', e=>cfg.radar=e.target.checked);
+$('cNight').addEventListener('change', e=>cfg.night=e.target.checked);
+$('cLabels').addEventListener('change', e=>cfg.labels=e.target.checked);
+$('cInfra').addEventListener('change', e=>cfg.infra=e.target.checked);
+
+$('btnPlay').addEventListener('click', ()=>{
+  running = !running;
+  $('btnPlay').textContent = running ? '⏸ Pausar' : '▶ Continuar';
+});
+$('btnPed').addEventListener('click', ()=>spawnPed());
+$('btnReset').addEventListener('click', ()=>{
+  cars=[]; peds=[]; fines=[]; flashes=[]; phase=0; phaseT=0; simClock=0;
+  stat = { cars:0, peds:0, fines:0, money:0, queue:0, sumV:0, nV:0 };
+  renderFines();
+});
+window.addEventListener('keydown', e=>{
+  if (e.code==='Space'){ e.preventDefault(); $('btnPlay').click(); }
+  if (e.key.toLowerCase()==='p') spawnPed();
+});
+cv.addEventListener('click', e=>{
+  const r = cv.getBoundingClientRect();
+  const x = (e.clientX-r.left)/r.width*W, y = (e.clientY-r.top)/r.height*H;
+  const d = { N:Math.hypot(x-CX,y-(CY-CW_OUT)), S:Math.hypot(x-CX,y-(CY+CW_OUT)),
+              W:Math.hypot(x-(CX-CW_OUT),y-CY), E:Math.hypot(x-(CX+CW_OUT),y-CY) };
+  let best='N'; for (const k in d) if (d[k]<d[best]) best=k;
+  spawnPed(best);
+});
+
+renderFines();
+for (let i=0;i<4;i++) spawn(DIRKEYS[i]);
+requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>
