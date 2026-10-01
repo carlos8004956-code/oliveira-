@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dia Nacional de Segurança e de Saúde nas Escolas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #16324f;
+      --muted: #4d647c;
+      --paper: #f4f7fb;
+      --card: #ffffff;
+      --line: #d7e3ef;
+      --teal: #0f8b8d;
+      --teal-d: #0b6e70;
+      --sun: #f4a261;
+      --coral: #e76f51;
+      --leaf: #2a9d8f;
+      --sky: #1d7ab8;
+      --shadow: 0 16px 40px rgba(22, 50, 79, 0.08);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Nunito", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(900px 420px at 90% -10%, #ffe8cc 0%, transparent 60%),
+        radial-gradient(700px 380px at -10% 8%, #d7f3ef 0%, transparent 55%),
+        var(--paper);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(244, 247, 251, 0.86);
+      border-bottom: 1px solid rgba(215, 227, 239, 0.8);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+    .badge {
+      width: 42px; height: 42px; border-radius: 14px;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, var(--teal), var(--sky));
+      color: white; font-size: 20px;
+      box-shadow: 0 8px 18px rgba(15, 139, 141, 0.28);
+    }
+    nav { display: flex; gap: 8px; flex-wrap: wrap; }
+    nav a {
+      text-decoration: none; font-weight: 700; font-size: 14px;
+      padding: 8px 12px; border-radius: 999px; color: var(--muted);
+    }
+    nav a:hover { background: white; color: var(--ink); }
+    .hero {
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px;
+      align-items: center; padding: 42px 0 18px;
+    }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--line);
+      padding: 6px 12px; border-radius: 999px; font-weight: 800;
+      color: var(--teal-d); font-size: 13px; letter-spacing: 0.02em;
+    }
+    h1 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.02; margin: 14px 0 12px; letter-spacing: -0.03em;
+    }
+    h1 span { color: var(--teal); }
+    .lead { font-size: 18px; color: var(--muted); max-width: 620px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    button, .btn {
+      border: 0; cursor: pointer; font-family: inherit; font-weight: 800;
+      border-radius: 14px; padding: 13px 18px; font-size: 15px;
+    }
+    .btn-primary { background: var(--ink); color: white; }
+    .btn-primary:hover { background: #0e243b; }
+    .btn-soft { background: white; color: var(--ink); border: 1px solid var(--line); }
+    .hero-card {
+      background: linear-gradient(160deg, #12324d, #0f8b8d 70%, #f4a261);
+      color: white; border-radius: 30px; padding: 26px;
+      box-shadow: var(--shadow); min-height: 320px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .hero-card::after {
+      content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); right: -40px; top: -40px;
+    }
+    .date-big { font-family: "Fraunces", serif; font-size: 72px; line-height: 0.9; }
+    .date-sub { opacity: 0.9; font-weight: 700; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+    .stat {
+      background: rgba(255,255,255,0.14); border-radius: 16px; padding: 12px;
+      backdrop-filter: blur(6px);
+    }
+    .stat b { display: block; font-size: 18px; }
+    section { padding: 28px 0; }
+    h2 {
+      font-family: "Fraunces", serif; font-size: clamp(28px, 3vw, 40px);
+      margin: 0 0 8px; letter-spacing: -0.02em;
+    }
+    .sub { color: var(--muted); margin: 0 0 18px; max-width: 720px; }
+    .grid { display: grid; gap: 14px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+    }
+    .icon {
+      width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+      font-size: 22px; margin-bottom: 10px;
+    }
+    .t1 { background: #e7f6f4; } .t2 { background: #fff1e4; }
+    .t3 { background: #e8f2fb; } .t4 { background: #fdecea; }
+    .t5 { background: #eef8e8; } .t6 { background: #f3eefe; }
+    h3 { margin: 0 0 6px; font-size: 18px; }
+    p { margin: 0; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .tab {
+      background: white; border: 1px solid var(--line); color: var(--muted);
+    }
+    .tab.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .tip-list { display: grid; gap: 10px; }
+    .tip {
+      display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: start;
+      background: white; border: 1px solid var(--line); border-radius: 16px; padding: 12px;
+    }
+    .check-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: white; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px;
+    }
+    .check-item input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--teal); }
+    .progress {
+      height: 12px; background: #e6eef6; border-radius: 999px; overflow: hidden; margin: 8px 0 16px;
+    }
+    .progress span {
+      display: block; height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--leaf), var(--sun));
+      transition: width 0.3s ease;
+    }
+    .quiz-q { font-weight: 800; font-size: 20px; margin-bottom: 12px; }
+    .options { display: grid; gap: 10px; }
+    .opt {
+      text-align: left; background: white; border: 1px solid var(--line); color: var(--ink);
+    }
+    .opt:hover { border-color: var(--teal); }
+    .opt.good { background: #e7f6ef; border-color: #2a9d8f; }
+    .opt.bad { background: #fdecea; border-color: #e76f51; }
+    .score { margin-top: 14px; font-weight: 800; color: var(--teal-d); }
+    .emerg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .num { border-radius: 20px; padding: 18px; color: white; }
+    .num b { display: block; font-size: 34px; font-family: "Fraunces", serif; }
+    .n1 { background: #c0392b; } .n2 { background: #d35400; } .n3 { background: #1d7ab8; }
+    footer { margin-top: 20px; padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+    .note {
+      background: #fff8ee; border: 1px dashed #f4a261; border-radius: 16px; padding: 12px 14px;
+      color: #7a4b16; font-weight: 700;
+    }
+    @media (max-width: 860px) {
+      .hero, .grid-3, .grid-4, .emerg { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="brand"><div class="badge">🛡️</div> Segurança e Saúde na Escola</div>
+      <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#cuidados">Cuidados</a>
+        <a href="#saude">Saúde</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#missao">Missão</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="kicker">10 de outubro · Lei nº 12.645/2012</div>
+        <h1>Dia Nacional de <span>Segurança e Saúde</span> nas Escolas</h1>
+        <p class="lead">Um dia para aprender a cuidar de você, dos colegas, da escola e do caminho até em casa. Prevenir acidentes, manter a higiene e respeitar o ambiente deixam o dia mais seguro para todo mundo.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#quiz">Fazer o quiz</a>
+          <a class="btn btn-soft" href="#missao">Começar a missão</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div>
+          <div class="date-sub">Data oficial</div>
+          <div class="date-big">10/10</div>
+          <p>O mês de outubro também pode ser o mês da segurança e da saúde nas escolas. As ações valem o ano inteiro.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>CIPA Escolar</b> alunos e professores juntos na prevenção</div>
+          <div class="stat"><b>Tema 2025</b> resíduos sólidos: cuidar da gente e do ambiente</div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="sobre">
+      <h2>O que é esse dia?</h2>
+      <p class="sub">A Lei nº 12.645/2012 criou o Dia Nacional de Segurança e de Saúde nas Escolas. Escolas, famílias e parceiros podem fazer palestras, aulas especiais, concursos e atividades de prevenção.</p>
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="icon t1">📚</div>
+          <h3>Aprender para a vida</h3>
+          <p>O que você aprende na escola sobre cuidado também serve em casa, no trajeto, no lazer e no futuro trabalho.</p>
+        </article>
+        <article class="card">
+          <div class="icon t2">🤝</div>
+          <h3>CIPA Escolar</h3>
+          <p>É uma comissão de alunos e educadores que observa riscos, sugere melhorias e ajuda a espalhar bons hábitos.</p>
+        </article>
+        <article class="card">
+          <div class="icon t3">🌱</div>
+          <h3>Gente e ambiente</h3>
+          <p>Lixo no lugar certo, água limpa e pátios cuidados protegem a saúde de estudantes, funcionários e da cidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="cuidados">
+      <h2>Cuidados do dia a dia</h2>
+      <p class="sub">Escolha um lugar e veja o que fazer. Clique nas abas.</p>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="escola">Na escola</button>
+        <button class="tab" data-tab="caminho">No caminho</button>
+        <button class="tab" data-tab="patio">No pátio</button>
+        <button class="tab" data-tab="lixo">Resíduos</button>
+      </div>
+      <div class="tip-list" id="tips"></div>
+    </section>
+
+    <section id="saude">
+      <h2>Saúde que cabe na rotina</h2>
+      <div class="grid grid-4">
+        <article class="card"><div class="icon t5">🧼</div><h3>Mãos limpas</h3><p>Lave as mãos com água e sabão antes de comer, depois do banheiro e ao chegar da rua.</p></article>
+        <article class="card"><div class="icon t2">🍎</div><h3>Lanche esperto</h3><p>Prefira frutas, água e alimentos da escola. Evite ficar o dia inteiro só com doce e refrigerante.</p></article>
+        <article class="card"><div class="icon t3">🏃</div><h3>Mexer o corpo</h3><p>Recreio, educação física e brincadeiras seguras ajudam o corpo e a atenção na aula.</p></article>
+        <article class="card"><div class="icon t6">😌</div><h3>Respeito</h3><p>Falar com calma, pedir ajuda a um adulto e incluir os colegas faz a escola mais saudável.</p></article>
+      </div>
+      <div style="height:14px"></div>
+      <div class="note">Se alguém se machucar, chame um adulto da escola na hora. Não tente resolver sozinho uma situação grave.</div>
+    </section>
+
+    <section>
+      <h2>Números de emergência</h2>
+      <p class="sub">Guarde estes números. Em emergência, um adulto deve ligar. Fale com calma: o que aconteceu, onde está e quantas pessoas precisam de ajuda.</p>
+      <div class="emerg">
+        <div class="num n1"><span>SAMU</span><b>192</b> urgência de saúde</div>
+        <div class="num n2"><span>Bombeiros</span><b>193</b> fogo, resgate e acidentes</div>
+        <div class="num n3"><span>Polícia Militar</span><b>190</b> quando houver perigo imediato</div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <h2>Quiz da prevenção</h2>
+      <p class="sub">Quatro perguntas. Escolha a melhor atitude.</p>
+      <div class="card" id="quizBox"></div>
+    </section>
+
+    <section id="missao">
+      <h2>Missão do dia</h2>
+      <p class="sub">Marque o que você já consegue fazer. Seu progresso fica salvo neste navegador.</p>
+      <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+      <div id="mission" class="grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Conteúdo educativo inspirado no Dia Nacional de Segurança e de Saúde nas Escolas (10 de outubro, Lei nº 12.645/2012) e na campanha de 2025 “Resíduos Sólidos: cuidar da gente e do meio ambiente”. Não substitui orientação da escola, da família ou de profissionais de saúde.
+    </div>
+  </footer>
+
+  <script>
+    const tips = {
+      escola: [
+        ["🚶", "Ande pelos corredores. Correr em escada e perto de portas aumenta queda."],
+        ["💧", "Avise um adulto se o chão estiver molhado ou se uma cadeira estiver quebrada."],
+        ["🔌", "Não mexa em tomada, fio desencapado ou aparelho elétrico da escola."],
+        ["🎒", "Mochila pesada demais nas duas alças. Não deixe ela no meio do caminho."]
+      ],
+      caminho: [
+        ["🚦", "Atravesse na faixa, com o sinal liberado, olhando dos dois lados."],
+        ["🚌", "Espere o transporte parado. Não corra atrás do ônibus nem desça em movimento."],
+        ["👀", "Tire o fone ao atravessar a rua. Você precisa ouvir buzina e motores."],
+        ["👕", "O uniforme ajuda a identificar o estudante se precisar de ajuda."]
+      ],
+      patio: [
+        ["⚽", "Brinque na área combinada. Bola perto de vidro e escada pode machucar."],
+        ["☀️", "Em dia muito quente, beba água e procure sombra no intervalo."],
+        ["🛝", "Um de cada vez no brinquedo. Não empurre quem está descendo."],
+        ["🩹", "Machucou? Pare a brincadeira e chame um adulto."]
+      ],
+      lixo: [
+        ["🗑️", "Papel, resto de lanche e embalagem vão no cesto, nunca no chão ou no ralo."],
+        ["♻️", "Separe reciclável quando a escola tiver coleta. Lave embalagem só se pedirem."],
+        ["🦟", "Água parada em vaso, garrafa e calha vira criadouro de mosquito."],
+        ["🧤", "Não pegue lixo cortante ou desconhecido. Chame a equipe da escola."]
+      ]
+    };
+
+    const tipBox = document.getElementById("tips");
+    function renderTips(key) {
+      tipBox.innerHTML = tips[key].map(([ico, text]) =>
+        `<div class="tip"><div class="icon t3">${ico}</div><p>${text}</p></div>`
+      ).join("");
+    }
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab");
+      if (!btn) return;
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      btn.classList.add("active");
+      renderTips(btn.dataset.tab);
+    });
+    renderTips("escola");
+
+    const questions = [
+      {
+        q: "O chão do corredor está molhado e sem aviso. O que você faz?",
+        options: ["Passa correndo para não escorregar.", "Avisa um adulto e desvia com cuidado.", "Empurra o colega para ele testar o piso."],
+        answer: 1
+      },
+      {
+        q: "Na hora de atravessar, o sinal está fechado para pedestres. Qual é a atitude segura?",
+        options: ["Atravessar rápido porque não vem carro.", "Esperar o sinal de pedestre e olhar dos dois lados.", "Atravessar ouvindo música bem alta."],
+        answer: 1
+      },
+      {
+        q: "Sobrou embalagem do lanche. Onde ela deve ir?",
+        options: ["No chão do pátio, porque alguém limpa depois.", "No cesto certo, ou na reciclagem se a escola separar.", "Dentro da pia ou do vaso sanitário."],
+        answer: 1
+      },
+      {
+        q: "Um colega caiu e está chorando de dor. O primeiro passo é:",
+        options: ["Chamar imediatamente um adulto da escola.", "Levantar a pessoa sozinho e continuar a brincadeira.", "Filmar para mostrar depois."],
+        answer: 0
+      }
+    ];
+
+    let qi = 0, score = 0, locked = false;
+    const quizBox = document.getElementById("quizBox");
+    function renderQuestion() {
+      const item = questions[qi];
+      quizBox.innerHTML = `
+        <div class="quiz-q">Pergunta ${qi + 1} de ${questions.length}</div>
+        <p style="margin-bottom:12px;font-weight:700">${item.q}</p>
+        <div class="options">
+          ${item.options.map((op, i) => `<button class="opt" data-i="${i}">${op}</button>`).join("")}
+        </div>
+        <div class="score" id="score">Acertos: ${score}</div>
+      `;
+      locked = false;
+    }
+    quizBox.addEventListener("click", (e) => {
+      const btn = e.target.closest(".opt");
+      if (!btn || locked) return;
+      locked = true;
+      const chosen = Number(btn.dataset.i);
+      const ok = chosen === questions[qi].answer;
+      if (ok) score++;
+      document.querySelectorAll(".opt").forEach((el, i) => {
+        if (i === questions[qi].answer) el.classList.add("good");
+        else if (i === chosen) el.classList.add("bad");
+      });
+      setTimeout(() => {
+        qi++;
+        if (qi < questions.length) renderQuestion();
+        else {
+          quizBox.innerHTML = `
+            <h3>Resultado: ${score} de ${questions.length}</h3>
+            <p>${score === 4 ? "Mandou bem! Você já pensa como guardião da escola." : "Bom começo. Releia os cuidados e tente de novo."}</p>
+            <div class="actions"><button class="btn btn-primary" id="retry">Refazer quiz</button></div>
+          `;
+          document.getElementById("retry").onclick = () => { qi = 0; score = 0; renderQuestion(); };
+        }
+      }, 700);
+    });
+    renderQuestion();
+
+    const missions = [
+      "Lavei as mãos antes do lanche",
+      "Não corri na escada",
+      "Joguei o lixo no cesto",
+      "Atravessei na faixa olhando dos dois lados",
+      "Avisei um adulto sobre um risco que vi",
+      "Incluí um colega na brincadeira",
+      "Bebi água durante o dia",
+      "Guardei os números 192, 193 e 190"
+    ];
+    const missionBox = document.getElementById("mission");
+    const saved = JSON.parse(localStorage.getItem("dnsse-missao") || "[]");
+    missionBox.innerHTML = missions.map((m, i) => `
+      <label class="check-item">
+        <input type="checkbox" data-i="${i}" ${saved.includes(i) ? "checked" : ""} />
+        <span>${m}</span>
+      </label>
+    `).join("");
+    function updateBar() {
+      const boxes = [...missionBox.querySelectorAll("input")];
+      const done = boxes.filter(b => b.checked).map(b => Number(b.dataset.i));
+      localStorage.setItem("dnsse-missao", JSON.stringify(done));
+      document.getElementById("bar").style.width = (done.length / missions.length * 100) + "%";
+    }
+    missionBox.addEventListener("change", updateBar);
+    updateBar();
+  </script>
+</body>
+</html>
